@@ -8,10 +8,14 @@ export default function Parameters() {
 
   let enteredParticipants;
   const changeHandler = () => {
-    console.log("change handler running");
     enteredParticipants = participantsRef.current?.value;
     if (enteredParticipants) {
-      setBets(new Array(+enteredParticipants));
+      console.log(enteredParticipants)
+      let filledArray = [];
+      for (let i = 0; i < +enteredParticipants; i++) {
+        filledArray.push(`Player ${i + 1}`)
+      }
+      setBets(filledArray);
     }
   };
 
@@ -27,14 +31,7 @@ export default function Parameters() {
         ref={participantsRef}
       />
       <ul>
-        {bets &&
-          bets.map((bet) => {
-            return (
-              <li key={Math.random()}>
-                <input type="text" />
-              </li>
-            );
-          })}
+        {bets && <Bets bets={bets} />}
       </ul>
       <button>Play</button>
     </form>
