@@ -1,38 +1,54 @@
 import { useRef, useState } from "react";
 
-import Bets from "./Bets";
+import PlayerList from "./PlayerList";
 
 export default function Parameters() {
-  const [bets, setBets] = useState<string[] | null>(null);
-  const participantsRef = useRef<HTMLInputElement>(null);
+  // ref and state for selecting total number of players
+  const [totalPlayers, setTotalPlayers] = useState<string[] | null>(null);
+  const rowsRef = useRef<HTMLInputElement>(null);
+  const totalPlayersRef = useRef<HTMLInputElement>(null);
 
-  let enteredParticipants;
+  let enteredPlayers;
+
+  // function to keep track of input value for total number of players
   const changeHandler = () => {
-    enteredParticipants = participantsRef.current?.value;
-    if (enteredParticipants) {
-      console.log(enteredParticipants)
+    // create an empty array and fill with default player ids based on total number of players
+    enteredPlayers = totalPlayersRef.current?.value;
+    if (enteredPlayers) {
       let filledArray = [];
-      for (let i = 0; i < +enteredParticipants; i++) {
-        filledArray.push(`Player ${i + 1}`)
+      for (let i = 0; i < +enteredPlayers; i++) {
+        filledArray.push(`Player ${i + 1}`);
       }
-      setBets(filledArray);
+      setTotalPlayers(filledArray);
+    } else {
+      setTotalPlayers(null);
     }
   };
 
+  function submitHandler(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    enteredPlayers = totalPlayersRef.current?.value;
+    const rows = rowsRef.current?.value;
+    console.log({
+      rows: rows,
+      totalPlayers: enteredPlayers,
+    });
+  }
+
   return (
-    <form>
+    <form onSubmit={submitHandler}>
       <label htmlFor="rows">Number of Rows</label>
-      <input id="rows" type="number" />
+      <input id="rows" type="number" name="rows" ref={rowsRef} />
       <label htmlFor="participants">Number of Players</label>
       <input
+        value={enteredPlayers}
         onChange={changeHandler}
+        name="participants"
         id="participants"
         type="number"
-        ref={participantsRef}
+        ref={totalPlayersRef}
       />
-      <ul>
-        {bets && <Bets bets={bets} />}
-      </ul>
+      <ul>{totalPlayers && <PlayerList totalBets={totalPlayers} />}</ul>
       <button>Play</button>
     </form>
   );
