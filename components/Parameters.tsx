@@ -1,32 +1,29 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
+import GameContext from "../context/game-context";
+import { BetsType } from "../models/types";
 
 import PlayerList from "./PlayerList";
 
 export default function Parameters() {
+  const gameCtx = useContext(GameContext);
+
   // ref and state for selecting total number of players
   const [totalPlayers, setTotalPlayers] = useState<string[] | null>(null);
   const rowsRef = useRef<HTMLInputElement>(null);
   const totalPlayersRef = useRef<HTMLInputElement>(null);
 
-  let enteredPlayers;
+  // state for filled bets returned after inputting total number of players and their bets
+  const [filledBets, setFilledBets] = useState<BetsType | null>(null);
 
+  let enteredPlayers: string | undefined;
   // function to keep track of input value for total number of players
   const changeHandler = () => {
-    // create an empty array and fill with default player ids based on total number of players
     enteredPlayers = totalPlayersRef.current?.value;
-    if (enteredPlayers) {
-      let filledArray = [];
-      for (let i = 0; i < +enteredPlayers; i++) {
-        filledArray.push(`Player ${i + 1}`);
-      }
-      setTotalPlayers(filledArray);
-    } else {
-      setTotalPlayers(null);
-    }
+    gameCtx?.addPlayerForm(enteredPlayers);
   };
 
-  function returnPlayerBets(playerBets: {}) {
-    console.log(playerBets);
+  function returnPlayerBets(playerBets: BetsType) {
+    setFilledBets(playerBets);
   }
 
   // submission handler
@@ -39,6 +36,7 @@ export default function Parameters() {
     console.log({
       rows: rows,
       totalPlayers: enteredPlayers,
+      playerBets: filledBets,
     });
   }
 
@@ -55,14 +53,7 @@ export default function Parameters() {
         type="number"
         ref={totalPlayersRef}
       />
-      <ul>
-        {totalPlayers && (
-          <PlayerList
-            unfilledBets={totalPlayers}
-            returnBets={returnPlayerBets}
-          />
-        )}
-      </ul>
+      <ul>{gameCtx?.playerForm && <PlayerList />}</ul>
       <button>Play</button>
     </form>
   );

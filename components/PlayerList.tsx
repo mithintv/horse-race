@@ -1,29 +1,17 @@
-import { BetType, BetsType } from "../models/types";
+import { useContext } from "react";
+// context component
+import GameContext from "../context/game-context";
+// custom components
+import Player from "./Player";
 
-import { useEffect, useState } from "react";
-import Bet from "./Bet";
-
-type Props = {
-  unfilledBets: string[];
-  returnBets: (playerBets: BetsType) => void;
-};
-
-export default function Bets(props: Props) {
-  const [filledBets, setFilledBets] = useState<BetsType>([]);
-
-  function returnData(playerData: BetType) {
-    setFilledBets([...filledBets, playerData]);
-  }
-
-  useEffect(() => {
-    props.returnBets(filledBets);
-  }, [filledBets]);
+export default function PlayerList() {
+  const gameCtx = useContext(GameContext);
 
   return (
-    // for each entry in the array created in PlayerList (totalBets), return a Bet component
+    // for each entry in the array created in gameCtx.playerForm, return a Player component
     <>
-      {props.unfilledBets.map((bet) => {
-        return <Bet key={bet} playerId={bet} sendData={returnData} />;
+      {gameCtx?.playerForm?.map((player, index) => {
+        return <Player key={player} playerId={index} playerName={player} />;
       })}
     </>
   );
