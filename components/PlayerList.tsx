@@ -1,15 +1,29 @@
+import { BetType, BetsType } from "../models/types";
+
+import { useEffect, useState } from "react";
 import Bet from "./Bet";
 
 type Props = {
-  totalBets: string[];
+  unfilledBets: string[];
+  returnBets: (playerBets: BetsType) => void;
 };
 
-export default function Bets({ totalBets }: Props) {
+export default function Bets(props: Props) {
+  const [filledBets, setFilledBets] = useState<BetsType>([]);
+
+  function returnData(playerData: BetType) {
+    setFilledBets([...filledBets, playerData]);
+  }
+
+  useEffect(() => {
+    props.returnBets(filledBets);
+  }, [filledBets]);
+
   return (
     // for each entry in the array created in PlayerList (totalBets), return a Bet component
     <>
-      {totalBets.map((bet) => {
-        return <Bet key={bet} playerId={bet} />;
+      {props.unfilledBets.map((bet) => {
+        return <Bet key={bet} playerId={bet} sendData={returnData} />;
       })}
     </>
   );

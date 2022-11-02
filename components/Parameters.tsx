@@ -25,10 +25,17 @@ export default function Parameters() {
     }
   };
 
+  function returnPlayerBets(playerBets: {}) {
+    console.log(playerBets);
+  }
+
+  // submission handler
   function submitHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
     enteredPlayers = totalPlayersRef.current?.value;
     const rows = rowsRef.current?.value;
+
     console.log({
       rows: rows,
       totalPlayers: enteredPlayers,
@@ -48,7 +55,14 @@ export default function Parameters() {
         type="number"
         ref={totalPlayersRef}
       />
-      <ul>{totalPlayers && <PlayerList totalBets={totalPlayers} />}</ul>
+      <ul>
+        {totalPlayers && (
+          <PlayerList
+            unfilledBets={totalPlayers}
+            returnBets={returnPlayerBets}
+          />
+        )}
+      </ul>
       <button>Play</button>
     </form>
   );
