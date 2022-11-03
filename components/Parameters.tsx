@@ -1,57 +1,50 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef } from "react";
 import GameContext from "../context/game-context";
-import { BetsType } from "../models/types";
 
 import PlayerList from "./PlayerList";
 
 export default function Parameters() {
   const gameCtx = useContext(GameContext);
 
-  // ref and state for selecting total number of players
-  const [totalPlayers, setTotalPlayers] = useState<string[] | null>(null);
-  const rowsRef = useRef<HTMLInputElement>(null);
+  // refs for selecting total number of players and total number of rows
+  const totalRowsRef = useRef<HTMLInputElement>(null);
   const totalPlayersRef = useRef<HTMLInputElement>(null);
 
-  // state for filled bets returned after inputting total number of players and their bets
-  const [filledBets, setFilledBets] = useState<BetsType | null>(null);
-
-  let enteredPlayers: string | undefined;
-  // function to keep track of input value for total number of players
-  const changeHandler = () => {
-    enteredPlayers = totalPlayersRef.current?.value;
-    gameCtx?.addPlayerForm(enteredPlayers);
+  // function to keep track of input value for total number of rows
+  const rowsChangeHandler = () => {
+    const enteredRows = totalRowsRef.current?.value;
+    gameCtx?.addRows(enteredRows);
   };
 
-  function returnPlayerBets(playerBets: BetsType) {
-    setFilledBets(playerBets);
-  }
+  // function to keep track of input value for total number of players
+  const playersChangeHandler = () => {
+    const enteredPlayers = totalPlayersRef.current?.value;
+    gameCtx?.addPlayerForm(enteredPlayers);
+  };
 
   // submission handler
   function submitHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
-    enteredPlayers = totalPlayersRef.current?.value;
-    const rows = rowsRef.current?.value;
-
-    console.log({
-      rows: rows,
-      totalPlayers: enteredPlayers,
-      playerBets: filledBets,
-    });
+    gameCtx?.setMode();
   }
 
   return (
     <form onSubmit={submitHandler}>
       <label htmlFor="rows">Number of Rows</label>
-      <input id="rows" type="number" name="rows" ref={rowsRef} />
+      <input
+        type="number"
+        id="rows"
+        name="rows"
+        ref={totalRowsRef}
+        onChange={rowsChangeHandler}
+      />
       <label htmlFor="participants">Number of Players</label>
       <input
-        value={enteredPlayers}
-        onChange={changeHandler}
-        name="participants"
-        id="participants"
         type="number"
+        id="participants"
+        name="participants"
         ref={totalPlayersRef}
+        onChange={playersChangeHandler}
       />
       <ul>{gameCtx?.playerForm && <PlayerList />}</ul>
       <button>Play</button>

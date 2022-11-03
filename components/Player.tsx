@@ -15,27 +15,22 @@ export default function Bet(props: Props) {
   const nameInputRef = useRef<HTMLInputElement>(null);
   const betInputRef = useRef<HTMLInputElement>(null);
 
-  let enteredName;
-  let enteredBet;
   // onChange handler for name input
   function changeHandler() {
-    enteredName = nameInputRef.current?.value;
+    const enteredName = nameInputRef.current?.value;
     if (enteredName) {
       setName(enteredName);
     } else setName(null);
   }
 
+  // onBlur handler to reflect most recent name and bet to context api
   function blurHandler() {
-    enteredName = nameInputRef.current?.value;
-    enteredBet = betInputRef.current?.value;
+    const enteredName = nameInputRef.current?.value;
+    const enteredBet = betInputRef.current?.value;
     gameCtx?.addBet(props.playerId, {
       name: enteredName,
       bet: enteredBet,
     });
-    // props.sendData({
-    //   name: enteredName,
-    //   bet: enteredBet,
-    // });
   }
 
   return (
