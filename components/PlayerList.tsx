@@ -10,8 +10,10 @@ export default function PlayerList() {
   return (
     // for each entry in the array created in gameCtx.playerForm, return a Player component
     <>
-      {gameCtx?.playerForm?.map((player, index) => {
-        return <Player key={player} playerId={index} playerName={player} />;
+      {gameCtx?.players?.map((player, index) => {
+        return (
+          <Player key={index} playerId={player.id} playerName={player.name} />
+        );
       })}
     </>
   );

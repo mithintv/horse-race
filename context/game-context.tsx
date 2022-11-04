@@ -1,33 +1,19 @@
-import React, { useState, createContext } from "react";
-
-export declare interface AppProps {
-  children?: React.ReactNode;
-}
-
-interface GameContextInt {
-  rows: string | undefined;
-  addRows: (enteredRows: GameContextInt["rows"]) => void;
-  playerForm: string[] | null;
-  addPlayerForm: (enteredPlayers: string | undefined) => void;
-  addBet: (playerId: number, playerBet: {}) => void;
-  players: {}[];
-  displayForm: boolean;
-  setMode: () => void;
-}
+import React, { useState, useReducer, createContext } from "react";
+// custom types
+import { AppProps, GameContextInt, Player } from "../models/types";
+// custom functions and components
+import playersBetsReducer, { initialState } from "./playersBetsReducer";
 
 const GameContext = createContext<GameContextInt | null>(null);
 
 export const GameProvider = (props: AppProps) => {
-  // state for selecting total number of rows and resulting rows in-game
+  // state for selecting total number of rows and resulting rows in-game, total number of players and resulting player form for names and bets, and for displaying game parameter form
   const [totalRows, setTotalRows] = useState<GameContextInt["rows"]>(undefined);
-  // state for selecting total number of players and resulting player form
-  const [playerFormState, setPlayerFormState] =
-    useState<GameContextInt["playerForm"]>(null);
-  // state for filled player bets
-  const [playersBetsState, setPlayersBetsState] = useState<
-    GameContextInt["players"]
-  >([]);
-  // state for displaying game parameter form
+  const [playersBets, dispatchPlayersBets] = useReducer(
+    playersBetsReducer,
+    initialState
+  );
+
   const [displayForm, setDisplayForm] =
     useState<GameContextInt["displayForm"]>(true);
 
@@ -40,27 +26,30 @@ export const GameProvider = (props: AppProps) => {
     }
   };
 
-  // create an empty array and fill with default player ids based on total number of players
   const addPlayerFormHandler = (enteredPlayers: string | undefined) => {
-    if (enteredPlayers) {
-      let filledArray = [];
-      for (let i = 0; i < +enteredPlayers; i++) {
-        filledArray.push(`Player ${i + 1}`);
-      }
-      setPlayerFormState(filledArray);
-      setPlayersBetsState(filledArray);
-    } else {
-      setPlayerFormState(null);
-    }
+    dispatchPlayersBets({
+      type: "UPDATE_PLAYERS",
+      payload: enteredPlayers,
+    });
+  };
+
+  const addNameHandler = (playerId: number, playerName: string) => {
+    dispatchPlayersBets({
+      type: "UPDATE_NAME",
+      payload: {
+        playerId: playerId,
+        playerName: playerName,
+      },
+    });
   };
 
   // add or update bets function for individual players executed on Player.tsx component
   const addBetHandler = (playerId: number, playerBet: {}) => {
-    setPlayersBetsState((prevState) => {
-      const filledBets: {}[] = [...prevState];
-      filledBets[+playerId] = playerBet;
-      return filledBets;
-    });
+    // setPlayersBetsState((prevState) => {
+    //   const filledBets: {}[] = [...prevState];
+    //   filledBets[+playerId] = playerBet;
+    //   return filledBets;
+    // });
   };
 
   const modeHandler = () => {
@@ -71,12 +60,13 @@ export const GameProvider = (props: AppProps) => {
     <GameContext.Provider
       value={{
         rows: totalRows,
-        addRows: addRowsHandler,
-        playerForm: playerFormState,
-        addPlayerForm: addPlayerFormHandler,
-        addBet: addBetHandler,
-        players: playersBetsState,
+        players: playersBets,
         displayForm: displayForm,
+
+        addRows: addRowsHandler,
+        addPlayerForm: addPlayerFormHandler,
+        addName: addNameHandler,
+        addBet: addBetHandler,
         setMode: modeHandler,
       }}
     >

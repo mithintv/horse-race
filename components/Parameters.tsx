@@ -46,7 +46,7 @@ export default function Parameters() {
         ref={totalPlayersRef}
         onChange={playersChangeHandler}
       />
-      <ul>{gameCtx?.playerForm && <PlayerList />}</ul>
+      <ul>{gameCtx?.players && <PlayerList />}</ul>
       <button>Play</button>
     </form>
   );

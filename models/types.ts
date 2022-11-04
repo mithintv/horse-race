@@ -1,6 +1,24 @@
-export type BetType = {
-  name: string | undefined;
-  bet: string | undefined;
+export declare interface AppProps {
+  children?: React.ReactNode;
+}
+
+export type Player = {
+  id: number;
+  name: string;
+  suit: {
+    type: "Hearts" | "Spades" | "Diamonds" | "Clubs" | null;
+    bets: [] | null;
+  }[];
 };
 
-export type BetsType = BetType[];
+export interface GameContextInt {
+  rows: string | undefined;
+  players: Player[];
+  displayForm: boolean;
+
+  addRows: (enteredRows: GameContextInt["rows"]) => void;
+  addPlayerForm: (enteredPlayers: string | undefined) => void;
+  addName: (playerId: number, playerName: string) => void;
+  addBet: (playerId: number, playerBet: {}) => void;
+  setMode: () => void;
+}
