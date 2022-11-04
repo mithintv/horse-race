@@ -5,9 +5,9 @@ export declare interface AppProps {
 export type Player = {
   id: number;
   name: string;
-  suit: {
+  suits: {
     type: "Hearts" | "Spades" | "Diamonds" | "Clubs" | null;
-    bets: [] | null;
+    bets: string | null;
   }[];
 };
 
