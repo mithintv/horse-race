@@ -1,24 +1,23 @@
 import React, { useState, useReducer, createContext } from "react";
 // custom types
-import { AppProps, GameContextInt, Player } from "../models/types";
+import { AppProps, GameContextInt } from "../models/types";
 // custom functions and components
 import playersBetsReducer, { initialState } from "./playersBetsReducer";
 
 const GameContext = createContext<GameContextInt | null>(null);
 
 export const GameProvider = (props: AppProps) => {
-  // state for selecting total number of rows and resulting rows in-game, total number of players and resulting player form for names and bets, and for displaying game parameter form
+  // state for selecting total number of rows and resulting rows in-game, total number of players and resulting player object for names and bets, and for displaying game or form
   const [totalRows, setTotalRows] = useState<GameContextInt["rows"]>(undefined);
   const [playersBets, dispatchPlayersBets] = useReducer(
     playersBetsReducer,
     initialState
   );
-
   const [displayForm, setDisplayForm] =
     useState<GameContextInt["displayForm"]>(true);
 
   // store number of rows in context api
-  const addRowsHandler = (enteredRows: string | undefined) => {
+  const addRowHandler: GameContextInt["addRow"] = (enteredRows) => {
     if (enteredRows) {
       setTotalRows(enteredRows);
     } else {
@@ -26,14 +25,16 @@ export const GameProvider = (props: AppProps) => {
     }
   };
 
-  const addPlayerFormHandler = (enteredPlayers: string | undefined) => {
+  // add player function that points to reducer logic
+  const addPlayerHandler: GameContextInt["addPlayer"] = (enteredPlayers) => {
     dispatchPlayersBets({
       type: "UPDATE_PLAYERS",
       payload: enteredPlayers,
     });
   };
 
-  const addNameHandler = (playerId: number, playerName: string) => {
+  // add name function that points to reducer logic
+  const addNameHandler: GameContextInt["addName"] = (playerId, playerName) => {
     dispatchPlayersBets({
       type: "UPDATE_NAME",
       payload: {
@@ -43,8 +44,8 @@ export const GameProvider = (props: AppProps) => {
     });
   };
 
-  // add or update bets function for individual players executed on Player.tsx component
-  const addBetHandler = (playerId: number, playerBet: {}) => {
+  // add bet function that points to reducer logic
+  const addBetHandler: GameContextInt["addBet"] = (playerId, playerBet) => {
     // setPlayersBetsState((prevState) => {
     //   const filledBets: {}[] = [...prevState];
     //   filledBets[+playerId] = playerBet;
@@ -63,8 +64,8 @@ export const GameProvider = (props: AppProps) => {
         players: playersBets,
         displayForm: displayForm,
 
-        addRows: addRowsHandler,
-        addPlayerForm: addPlayerFormHandler,
+        addRow: addRowHandler,
+        addPlayer: addPlayerHandler,
         addName: addNameHandler,
         addBet: addBetHandler,
         setMode: modeHandler,

@@ -1,14 +1,14 @@
-import { Player } from "../models/types";
+import { EmptyInput, Player } from "../models/types";
 
 export const initialState: [] = [];
 
 type ActionType =
-  | { type: "UPDATE_PLAYERS"; payload: string | undefined }
+  | { type: "UPDATE_PLAYERS"; payload: EmptyInput }
   | {
       type: "UPDATE_NAME";
       payload: {
-        playerId: number;
-        playerName: string;
+        playerId: Player["id"];
+        playerName: Player["name"];
       };
     };
 // | {
@@ -25,25 +25,37 @@ function playersBetsReducer(state: Player[], action: ActionType) {
     case "UPDATE_PLAYERS":
       // create an empty array and fill with default player ids based on total number of players
       if (action.payload) {
-        let filledArray = [];
+        const filledArray: Player[] = [];
         for (let i = 0; i < +action.payload; i++) {
           filledArray.push({
             id: i + 1,
             name: `Player ${i + 1}`,
-            suit: [
+            suits: [
               {
-                type: null,
-                bets: null,
+                type: "Hearts",
+                bets: undefined,
+              },
+              {
+                type: "Spades",
+                bets: undefined,
+              },
+              {
+                type: "Diamonds",
+                bets: undefined,
+              },
+              {
+                type: "Clubs",
+                bets: undefined,
               },
             ],
           });
         }
         return filledArray;
-      } else return [];
+      } else return state;
 
     case "UPDATE_NAME":
-      let newState: Player[] = [...state];
-      let player = newState.find(
+      const newState: Player[] = [...state];
+      const player = newState.find(
         (player) => player.id === action.payload.playerId
       );
       if (player) {
@@ -66,9 +78,6 @@ function playersBetsReducer(state: Player[], action: ActionType) {
     //       });
     //   }
     //   return newState;
-
-    default:
-      return state;
   }
 }
 

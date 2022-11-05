@@ -13,13 +13,13 @@ export default function Parameters() {
   // function to keep track of input value for total number of rows
   const rowsChangeHandler = () => {
     const enteredRows = totalRowsRef.current?.value;
-    gameCtx?.addRows(enteredRows);
+    gameCtx?.addRow(enteredRows);
   };
 
   // function to keep track of input value for total number of players
   const playersChangeHandler = () => {
     const enteredPlayers = totalPlayersRef.current?.value;
-    gameCtx?.addPlayerForm(enteredPlayers);
+    gameCtx?.addPlayer(enteredPlayers);
   };
 
   // submission handler
