@@ -3,6 +3,15 @@ import GameContext from "../context/game-context";
 
 import PlayerList from "./PlayerList";
 
+import {
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Input,
+} from "@chakra-ui/react";
+
 export default function Parameters() {
   const gameCtx = useContext(GameContext);
 
@@ -29,25 +38,33 @@ export default function Parameters() {
   }
 
   return (
-    <form onSubmit={submitHandler}>
-      <label htmlFor="rows">Number of Rows</label>
-      <input
-        type="number"
-        id="rows"
-        name="rows"
-        ref={totalRowsRef}
-        onChange={rowChangeHandler}
-      />
-      <label htmlFor="participants">Number of Players</label>
-      <input
-        type="number"
-        id="participants"
-        name="participants"
-        ref={totalPlayersRef}
-        onChange={playerChangeHandler}
-      />
-      <ul>{gameCtx?.players && <PlayerList />}</ul>
-      <button>Play</button>
-    </form>
+    <Flex align="center" justify="center">
+      <form onSubmit={submitHandler}>
+        <Flex mb={4}>
+          <FormControl mr={2} variant="floating" id="rows" isRequired>
+            <Input
+              type="number"
+              id="rows"
+              name="rows"
+              ref={totalRowsRef}
+              onChange={rowChangeHandler}
+            />
+            <FormLabel htmlFor="rows">Number of Rows</FormLabel>
+          </FormControl>
+          <FormControl variant="floating" id="participants" isRequired>
+            <Input
+              type="number"
+              id="participants"
+              name="participants"
+              ref={totalPlayersRef}
+              onChange={playerChangeHandler}
+            />
+            <FormLabel htmlFor="participants">Number of Players</FormLabel>
+          </FormControl>
+        </Flex>
+        <div>{gameCtx?.players && <PlayerList />}</div>
+        <Button>Play</Button>
+      </form>
+    </Flex>
   );
 }

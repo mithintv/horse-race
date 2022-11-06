@@ -5,6 +5,8 @@ import GameContext from "../context/game-context";
 // children components
 import Suit from "./Suit";
 
+import { Box, Button, Flex, Input } from "@chakra-ui/react";
+
 export default function Player(props: Pick<PlayerType, "id" | "name">) {
   const gameCtx = useContext(GameContext);
 
@@ -25,8 +27,8 @@ export default function Player(props: Pick<PlayerType, "id" | "name">) {
   const playerName = gameCtx?.players[props.id - 1].name;
 
   return (
-    <li>
-      <input
+    <>
+      <Input
         type="text"
         id={`${props.name} Name`}
         name={`${props.name} Name`}
@@ -49,6 +51,6 @@ export default function Player(props: Pick<PlayerType, "id" | "name">) {
           />
         );
       })}
-    </li>
+    </>
   );
 }

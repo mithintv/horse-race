@@ -2,6 +2,9 @@ import { PlayerType, SuitType, SuitTypes } from "../models/types";
 import { useContext, useRef, useState } from "react";
 import GameContext from "../context/game-context";
 
+// chakra components
+import { FormLabel, Input, Switch } from "@chakra-ui/react";
+
 interface Props extends Pick<PlayerType, "id" | "name"> {
   suitId: number;
   suit: SuitTypes;
@@ -36,8 +39,10 @@ export default function Suit(props: Props) {
 
   return (
     <>
-      <label htmlFor={`${props.name} ${props.suit}`}>{props.suit}</label>
-      <input
+      <FormLabel htmlFor={`${props.name} ${props.suit}`}>
+        {props.suit[0].toUpperCase() + props.suit.slice(1)}
+      </FormLabel>
+      <Switch
         type="checkbox"
         id={`${props.name} ${props.suit}`}
         name={`${props.name} ${props.suit}`}
@@ -45,14 +50,18 @@ export default function Suit(props: Props) {
         checked={checked}
       />
       {checked && (
-        <input
+        <Input
           onChange={changeHandler}
           ref={betInputRef}
           type="text"
           id={`${props.name} ${props.suit} Bet`}
           name={`${props.name} ${props.suit} Bet`}
           // display name of player conditionally based on entered name, otherwise default to instantiated player id
-          placeholder={enteredBets ? enteredBets : `${props.suit} Bet`}
+          placeholder={
+            enteredBets
+              ? enteredBets
+              : `${props.suit[0].toUpperCase() + props.suit.slice(1)} Bet`
+          }
           value={enteredBets}
         />
       )}
