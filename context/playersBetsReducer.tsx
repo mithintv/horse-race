@@ -1,4 +1,10 @@
-import { EmptyInput, PlayerType, SuitType, suits } from "../models/types";
+import {
+  EmptyInput,
+  PlayerType,
+  SuitType,
+  SuitSpecific,
+  suits,
+} from "../models/types";
 
 export const initialState: [] = [];
 
@@ -15,15 +21,15 @@ export type ActionType =
       type: "UPDATE_SUIT";
       payload: {
         playerId: PlayerType["id"];
-        suit: SuitType["type"];
-        checked: boolean;
+        suit: SuitSpecific["type"];
+        checked: SuitSpecific["checked"];
       };
     }
   | {
       type: "UPDATE_BETS";
       payload: {
         playerId: PlayerType["id"];
-        suit: SuitType["type"];
+        suit: SuitSpecific["type"];
         bets: EmptyInput;
       };
     };
@@ -32,7 +38,9 @@ export default function playersBetsReducer(
   state: PlayerType[],
   action: ActionType
 ) {
-  let newState: PlayerType[], player;
+  let newState: PlayerType[],
+    player: PlayerType | undefined,
+    selectedSuit: SuitSpecific["type"];
   switch (action.type) {
     case "UPDATE_PLAYERS":
       // create an empty array and fill with default player ids based on total number of players
@@ -42,13 +50,32 @@ export default function playersBetsReducer(
           filledArray.push({
             id: i + 1,
             name: `Player ${i + 1}`,
-            suits: suits.map((suit) => {
-              return { type: suit, checked: false, bets: undefined };
-            }),
+            suits: {
+              hearts: {
+                type: "hearts",
+                checked: false,
+                bets: undefined,
+              },
+              spades: {
+                type: "spades",
+                checked: false,
+                bets: undefined,
+              },
+              diamonds: {
+                type: "diamonds",
+                checked: false,
+                bets: undefined,
+              },
+              clubs: {
+                type: "clubs",
+                checked: false,
+                bets: undefined,
+              },
+            },
           });
         }
         return filledArray;
-      } else return state;
+      } else return [...state];
 
     case "UPDATE_NAME":
       newState = [...state];
@@ -61,23 +88,15 @@ export default function playersBetsReducer(
     case "UPDATE_SUIT":
       newState = [...state];
       player = newState.find((player) => player.id === action.payload.playerId);
-      if (player) {
-        const suitIndex = player.suits.find(
-          (suit) => suit.type === action.payload.suit
-        );
-        if (suitIndex) suitIndex.checked = action.payload.checked;
-      }
+      selectedSuit = action.payload.suit;
+      if (player) player.suits[selectedSuit].checked = action.payload.checked;
       return newState;
 
     case "UPDATE_BETS":
       newState = [...state];
       player = newState.find((player) => player.id === action.payload.playerId);
-      if (player) {
-        const suitIndex = player.suits.find(
-          (suit) => suit.type === action.payload.suit
-        );
-        if (suitIndex) suitIndex.bets = action.payload.bets;
-      }
+      selectedSuit = action.payload.suit;
+      if (player) player.suits[selectedSuit].bets = action.payload.bets;
       return newState;
   }
 }

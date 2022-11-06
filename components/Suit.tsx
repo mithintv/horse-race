@@ -1,15 +1,15 @@
-import { PlayerType, SuitType } from "../models/types";
+import { PlayerType, SuitType, SuitTypes } from "../models/types";
 import { useContext, useRef, useState } from "react";
 import GameContext from "../context/game-context";
 
 interface Props extends Pick<PlayerType, "id" | "name"> {
   suitId: number;
-  suit: SuitType["type"];
+  suit: SuitTypes;
 }
 
 export default function Suit(props: Props) {
   const gameCtx = useContext(GameContext);
-  const enteredBets = gameCtx?.players[props.id - 1].suits[props.suitId].bets;
+  const enteredBets = gameCtx?.players[props.id - 1].suits[props.suit].bets;
 
   // state to control if a suit is checked or not and ref to extract bet input
   const [checked, setChecked] = useState(false);

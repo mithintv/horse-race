@@ -46,13 +46,13 @@ export const GameProvider = (props: AppProps) => {
   };
 
   // add suit function that points to reducer logic
-  const addSuitHandler: GameContextInt["addSuit"] = (playerId, playerBet) => {
+  const addSuitHandler: GameContextInt["addSuit"] = (playerId, playerSuit) => {
     dispatchPlayersBets({
       type: "UPDATE_SUIT",
       payload: {
         playerId: playerId,
-        suit: playerBet.type,
-        checked: playerBet.checked,
+        suit: playerSuit.type,
+        checked: playerSuit.checked,
       },
     });
   };
