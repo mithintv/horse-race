@@ -2,12 +2,14 @@ import { PlayerType, SuitType } from "../models/types";
 import { useContext, useRef, useState } from "react";
 import GameContext from "../context/game-context";
 
-interface Props extends Omit<PlayerType, "suit"> {
+interface Props extends Pick<PlayerType, "id" | "name"> {
+  suitId: number;
   suit: SuitType["type"];
 }
 
 export default function Suit(props: Props) {
   const gameCtx = useContext(GameContext);
+  const enteredBets = gameCtx?.players[props.id - 1].suits[props.suitId].bets;
 
   // state to control if a suit is checked or not and ref to extract bet input
   const [checked, setChecked] = useState(false);
@@ -16,6 +18,11 @@ export default function Suit(props: Props) {
   // function to handle onChange event (interacting with checkbox)
   function checkHandler(event: React.ChangeEvent<HTMLInputElement>) {
     setChecked(event.target.checked);
+    console.log(event.target.checked);
+    gameCtx?.addSuit(props.id, {
+      type: props.suit,
+      checked: event.target.checked,
+    });
   }
 
   // onChange handler to reflect most recent entered bet for particular suit
@@ -45,7 +52,8 @@ export default function Suit(props: Props) {
           id={`${props.name} ${props.suit} Bet`}
           name={`${props.name} ${props.suit} Bet`}
           // display name of player conditionally based on entered name, otherwise default to instantiated player id
-          placeholder={`${props.suit} Bet`}
+          placeholder={enteredBets ? enteredBets : `${props.suit} Bet`}
+          value={enteredBets}
         />
       )}
     </>

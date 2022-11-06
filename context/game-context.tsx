@@ -45,6 +45,18 @@ export const GameProvider = (props: AppProps) => {
     });
   };
 
+  // add suit function that points to reducer logic
+  const addSuitHandler: GameContextInt["addSuit"] = (playerId, playerBet) => {
+    dispatchPlayersBets({
+      type: "UPDATE_SUIT",
+      payload: {
+        playerId: playerId,
+        suit: playerBet.type,
+        checked: playerBet.checked,
+      },
+    });
+  };
+
   // add bet function that points to reducer logic
   const addBetHandler: GameContextInt["addBet"] = (playerId, playerBet) => {
     dispatchPlayersBets({
@@ -71,6 +83,7 @@ export const GameProvider = (props: AppProps) => {
         addRow: addRowHandler,
         addPlayer: addPlayerHandler,
         addName: addNameHandler,
+        addSuit: addSuitHandler,
         addBet: addBetHandler,
         setMode: modeHandler,
       }}

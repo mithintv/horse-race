@@ -1,8 +1,8 @@
-import { EmptyInput, PlayerType } from "../models/types";
+import { EmptyInput, PlayerType, SuitType, suits } from "../models/types";
 
 export const initialState: [] = [];
 
-type ActionType =
+export type ActionType =
   | { type: "UPDATE_PLAYERS"; payload: EmptyInput }
   | {
       type: "UPDATE_NAME";
@@ -12,15 +12,26 @@ type ActionType =
       };
     }
   | {
+      type: "UPDATE_SUIT";
+      payload: {
+        playerId: PlayerType["id"];
+        suit: SuitType["type"];
+        checked: boolean;
+      };
+    }
+  | {
       type: "UPDATE_BETS";
       payload: {
-        playerId: number;
-        suit: "Hearts" | "Spades" | "Diamonds" | "Clubs";
+        playerId: PlayerType["id"];
+        suit: SuitType["type"];
         bets: EmptyInput;
       };
     };
 
-function playersBetsReducer(state: PlayerType[], action: ActionType) {
+export default function playersBetsReducer(
+  state: PlayerType[],
+  action: ActionType
+) {
   let newState: PlayerType[], player;
   switch (action.type) {
     case "UPDATE_PLAYERS":
@@ -31,24 +42,9 @@ function playersBetsReducer(state: PlayerType[], action: ActionType) {
           filledArray.push({
             id: i + 1,
             name: `Player ${i + 1}`,
-            suits: [
-              {
-                type: "Hearts",
-                bets: undefined,
-              },
-              {
-                type: "Spades",
-                bets: undefined,
-              },
-              {
-                type: "Diamonds",
-                bets: undefined,
-              },
-              {
-                type: "Clubs",
-                bets: undefined,
-              },
-            ],
+            suits: suits.map((suit) => {
+              return { type: suit, checked: false, bets: undefined };
+            }),
           });
         }
         return filledArray;
@@ -60,6 +56,17 @@ function playersBetsReducer(state: PlayerType[], action: ActionType) {
       if (player) {
         player.name = action.payload.playerName;
       } else console.error(`Player with ${action.payload.playerId} not found`);
+      return newState;
+
+    case "UPDATE_SUIT":
+      newState = [...state];
+      player = newState.find((player) => player.id === action.payload.playerId);
+      if (player) {
+        const suitIndex = player.suits.find(
+          (suit) => suit.type === action.payload.suit
+        );
+        if (suitIndex) suitIndex.checked = action.payload.checked;
+      }
       return newState;
 
     case "UPDATE_BETS":
@@ -74,5 +81,3 @@ function playersBetsReducer(state: PlayerType[], action: ActionType) {
       return newState;
   }
 }
-
-export default playersBetsReducer;

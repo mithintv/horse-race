@@ -1,11 +1,11 @@
-import { PlayerType } from "../models/types";
+import { PlayerType, suits } from "../models/types";
 import { useRef, useContext } from "react";
 // context component
 import GameContext from "../context/game-context";
 // children components
 import Suit from "./Suit";
 
-export default function Player(props: Omit<PlayerType, "suits">) {
+export default function Player(props: Pick<PlayerType, "id" | "name">) {
   const gameCtx = useContext(GameContext);
 
   // ref hook to update and extract name field per player
@@ -38,8 +38,16 @@ export default function Player(props: Omit<PlayerType, "suits">) {
         Which suit would {playerName ? playerName : `Player ${props.id}`} like
         to bet on?
       </div>
-      {["Hearts", "Spades", "Diamonds", "Clubs"].map((suit, index) => {
-        return <Suit key={index} suit={suit} id={props.id} name={props.name} />;
+      {suits.map((suit, index) => {
+        return (
+          <Suit
+            key={index}
+            suitId={index}
+            suit={suit}
+            id={props.id}
+            name={props.name}
+          />
+        );
       })}
     </li>
   );
