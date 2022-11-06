@@ -1,49 +1,102 @@
-import { Player } from "../models/types";
+import {
+  EmptyInput,
+  PlayerType,
+  SuitType,
+  SuitSpecific,
+  suits,
+} from "../models/types";
 
 export const initialState: [] = [];
 
-type ActionType =
-  | { type: "UPDATE_PLAYERS"; payload: string | undefined }
+export type ActionType =
+  | { type: "UPDATE_PLAYERS"; payload: EmptyInput }
   | {
       type: "UPDATE_NAME";
       payload: {
-        playerId: number;
-        playerName: string;
+        playerId: PlayerType["id"];
+        playerName: PlayerType["name"];
+      };
+    }
+  | {
+      type: "UPDATE_SUIT";
+      payload: {
+        playerId: PlayerType["id"];
+        suit: SuitSpecific["type"];
+        checked: SuitSpecific["checked"];
+      };
+    }
+  | {
+      type: "UPDATE_BETS";
+      payload: {
+        playerId: PlayerType["id"];
+        suit: SuitSpecific["type"];
+        bets: EmptyInput;
       };
     };
 
-function playersBetsReducer(state: Player[], action: ActionType) {
+export default function playersBetsReducer(
+  state: PlayerType[],
+  action: ActionType
+) {
+  let newState: PlayerType[],
+    player: PlayerType | undefined,
+    selectedSuit: SuitSpecific["type"];
   switch (action.type) {
-    // create an empty array and fill with default player ids based on total number of players
     case "UPDATE_PLAYERS":
+      // create an empty array and fill with default player ids based on total number of players
       if (action.payload) {
-        let filledArray = [];
+        const filledArray: PlayerType[] = [];
         for (let i = 0; i < +action.payload; i++) {
           filledArray.push({
             id: i + 1,
             name: `Player ${i + 1}`,
-            suit: [
-              {
-                type: null,
-                bets: null,
+            suits: {
+              hearts: {
+                type: "hearts",
+                checked: false,
+                bets: undefined,
               },
-            ],
+              spades: {
+                type: "spades",
+                checked: false,
+                bets: undefined,
+              },
+              diamonds: {
+                type: "diamonds",
+                checked: false,
+                bets: undefined,
+              },
+              clubs: {
+                type: "clubs",
+                checked: false,
+                bets: undefined,
+              },
+            },
           });
         }
         return filledArray;
-      } else return [];
+      } else return [...state];
 
     case "UPDATE_NAME":
-      const newState: Player[] = [...state];
-      const player = newState.find(
-        (player) => player.id === action.payload.playerId
-      );
+      newState = [...state];
+      player = newState.find((player) => player.id === action.payload.playerId);
       if (player) {
         player.name = action.payload.playerName;
       } else console.error(`Player with ${action.payload.playerId} not found`);
+      return newState;
 
+    case "UPDATE_SUIT":
+      newState = [...state];
+      player = newState.find((player) => player.id === action.payload.playerId);
+      selectedSuit = action.payload.suit;
+      if (player) player.suits[selectedSuit].checked = action.payload.checked;
+      return newState;
+
+    case "UPDATE_BETS":
+      newState = [...state];
+      player = newState.find((player) => player.id === action.payload.playerId);
+      selectedSuit = action.payload.suit;
+      if (player) player.suits[selectedSuit].bets = action.payload.bets;
       return newState;
   }
 }
-
-export default playersBetsReducer;

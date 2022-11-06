@@ -1,14 +1,15 @@
+import { PlayerType, SuitType, SuitTypes } from "../models/types";
 import { useContext, useRef, useState } from "react";
 import GameContext from "../context/game-context";
 
-type Props = {
-  suit: string;
-  playerId: number;
-  playerName: string;
-};
+interface Props extends Pick<PlayerType, "id" | "name"> {
+  suitId: number;
+  suit: SuitTypes;
+}
 
-function Suit(props: Props) {
+export default function Suit(props: Props) {
   const gameCtx = useContext(GameContext);
+  const enteredBets = gameCtx?.players[props.id - 1].suits[props.suit].bets;
 
   // state to control if a suit is checked or not and ref to extract bet input
   const [checked, setChecked] = useState(false);
@@ -17,43 +18,44 @@ function Suit(props: Props) {
   // function to handle onChange event (interacting with checkbox)
   function checkHandler(event: React.ChangeEvent<HTMLInputElement>) {
     setChecked(event.target.checked);
+    console.log(event.target.checked);
+    gameCtx?.addSuit(props.id, {
+      type: props.suit,
+      checked: event.target.checked,
+    });
   }
 
-  // onBlur handler to reflect most recent name and bet to context api
-  function blurHandler() {
-    // const enteredName = nameInputRef.current?.value;
-    // const enteredBet = betInputRef.current?.value;
-    // gameCtx?.addBet(props.playerId, {
-    //   name: enteredName,
-    //   bet: enteredBet,
-    // });
+  // onChange handler to reflect most recent entered bet for particular suit
+  function changeHandler() {
+    const enteredBet = betInputRef.current?.value;
+    gameCtx?.addBet(props.id, {
+      type: props.suit,
+      bets: enteredBet,
+    });
   }
 
   return (
     <>
-      <label htmlFor={`${props.playerName} ${props.suit}`}>{props.suit}</label>
+      <label htmlFor={`${props.name} ${props.suit}`}>{props.suit}</label>
       <input
         type="checkbox"
-        id={`${props.playerName} ${props.suit}`}
-        name={`${props.playerName} ${props.suit}`}
+        id={`${props.name} ${props.suit}`}
+        name={`${props.name} ${props.suit}`}
         onChange={checkHandler}
         checked={checked}
       />
       {checked && (
         <input
-          onBlur={blurHandler}
+          onChange={changeHandler}
           ref={betInputRef}
           type="text"
-          id={`${props.playerName} ${props.suit} Bet`}
-          name={`${props.playerName} ${props.suit} Bet`}
+          id={`${props.name} ${props.suit} Bet`}
+          name={`${props.name} ${props.suit} Bet`}
           // display name of player conditionally based on entered name, otherwise default to instantiated player id
-          placeholder={`${props.suit} Bet`}
+          placeholder={enteredBets ? enteredBets : `${props.suit} Bet`}
+          value={enteredBets}
         />
       )}
     </>
   );
 }
-
-export default Suit;
-
-`${"hi"}`;

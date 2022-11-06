@@ -2,23 +2,49 @@ export declare interface AppProps {
   children?: React.ReactNode;
 }
 
-export type Player = {
-  id: number;
-  name: string;
-  suit: {
-    type: "Hearts" | "Spades" | "Diamonds" | "Clubs" | null;
-    bets: [] | null;
-  }[];
+export type EmptyInput = string | undefined;
+
+export type SuitTypes = "hearts" | "spades" | "diamonds" | "clubs";
+
+export const suits: SuitTypes[] = ["hearts", "spades", "diamonds", "clubs"];
+
+export type SuitSpecific = {
+  type: SuitTypes;
+  checked: boolean;
+  bets: EmptyInput;
 };
 
+export type SuitType = {
+  [key in SuitTypes]: SuitSpecific;
+};
+
+// export interface SuitType {
+//   type: "Hearts" | "Spades" | "Diamonds" | "Clubs";
+//   checked: boolean;
+//   bets: EmptyInput;
+// }
+
+export interface PlayerType {
+  id: number;
+  name: string;
+  suits: SuitType;
+}
+
 export interface GameContextInt {
-  rows: string | undefined;
-  players: Player[];
+  rows: EmptyInput;
+  players: PlayerType[];
   displayForm: boolean;
 
-  addRows: (enteredRows: GameContextInt["rows"]) => void;
-  addPlayerForm: (enteredPlayers: string | undefined) => void;
-  addName: (playerId: number, playerName: string) => void;
-  addBet: (playerId: number, playerBet: {}) => void;
+  addRow: (enteredRows: EmptyInput) => void;
+  addPlayer: (enteredPlayers: EmptyInput) => void;
+  addName: (playerId: PlayerType["id"], playerName: PlayerType["name"]) => void;
+  addSuit: (
+    playerId: PlayerType["id"],
+    playerSuit: Omit<SuitSpecific, "bets">
+  ) => void;
+  addBet: (
+    playerId: PlayerType["id"],
+    playerBet: Omit<SuitSpecific, "checked">
+  ) => void;
   setMode: () => void;
 }
