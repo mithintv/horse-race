@@ -1,17 +1,11 @@
-import { useRef, useState, useContext } from "react";
+import { PlayerType } from "../models/types";
+import { useRef, useContext } from "react";
 // context component
 import GameContext from "../context/game-context";
 // children components
 import Suit from "./Suit";
 
-const suits = ["Hearts", "Spades", "Diamonds", "Clubs"];
-
-type Props = {
-  playerId: number;
-  playerName: string;
-};
-
-export default function Bet(props: Props) {
+export default function Player(props: Omit<PlayerType, "suits">) {
   const gameCtx = useContext(GameContext);
 
   // ref hook to update and extract name field per player
@@ -19,51 +13,34 @@ export default function Bet(props: Props) {
 
   // onChange handler for name input
   function changeHandler() {
-    let enteredName = nameInputRef.current?.value;
+    const enteredName = nameInputRef.current?.value;
     if (enteredName) {
-      gameCtx?.addName(props.playerId, enteredName);
+      gameCtx?.addName(props.id, enteredName);
     } else {
-      gameCtx?.addName(props.playerId, `Player ${props.playerId}`);
+      gameCtx?.addName(props.id, `Player ${props.id}`);
     }
   }
 
   // extracting entered name for frontend from context api
-  const playerName = gameCtx?.players[props.playerId - 1].name;
+  const playerName = gameCtx?.players[props.id - 1].name;
 
   return (
     <li>
       <input
         type="text"
-        id={`${props.playerName} Name`}
-        name={`${props.playerName} Name`}
+        id={`${props.name} Name`}
+        name={`${props.name} Name`}
         ref={nameInputRef}
         onChange={changeHandler}
-        placeholder={playerName ? playerName : `Player ${props.playerId}`}
+        placeholder={playerName ? playerName : `Player ${props.id}`}
       />
       <div>
-        Which suit would {playerName ? playerName : `Player ${props.playerId}`}{" "}
-        like to bet on?
+        Which suit would {playerName ? playerName : `Player ${props.id}`} like
+        to bet on?
       </div>
-      {suits.map((suit, index) => {
-        return (
-          <Suit
-            key={index}
-            suit={suit}
-            playerId={props.playerId}
-            playerName={props.playerName}
-          />
-        );
+      {["Hearts", "Spades", "Diamonds", "Clubs"].map((suit, index) => {
+        return <Suit key={index} suit={suit} id={props.id} name={props.name} />;
       })}
-
-      {/* <input
-        onBlur={blurHandler}
-        ref={betInputRef}
-        type="text"
-        id={`${props.playerName} Bet`}
-        name={`${props.playerName} Bet`}
-        // display name of player conditionally based on entered name otherwise default to instantiated player id
-        placeholder={name ? `${name}'s Bet` : `${props.playerName} Bet`}
-      /> */}
     </li>
   );
 }

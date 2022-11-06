@@ -11,13 +11,13 @@ export default function Parameters() {
   const totalPlayersRef = useRef<HTMLInputElement>(null);
 
   // function to keep track of input value for total number of rows
-  const rowsChangeHandler = () => {
+  const rowChangeHandler = () => {
     const enteredRows = totalRowsRef.current?.value;
     gameCtx?.addRow(enteredRows);
   };
 
   // function to keep track of input value for total number of players
-  const playersChangeHandler = () => {
+  const playerChangeHandler = () => {
     const enteredPlayers = totalPlayersRef.current?.value;
     gameCtx?.addPlayer(enteredPlayers);
   };
@@ -36,7 +36,7 @@ export default function Parameters() {
         id="rows"
         name="rows"
         ref={totalRowsRef}
-        onChange={rowsChangeHandler}
+        onChange={rowChangeHandler}
       />
       <label htmlFor="participants">Number of Players</label>
       <input
@@ -44,7 +44,7 @@ export default function Parameters() {
         id="participants"
         name="participants"
         ref={totalPlayersRef}
-        onChange={playersChangeHandler}
+        onChange={playerChangeHandler}
       />
       <ul>{gameCtx?.players && <PlayerList />}</ul>
       <button>Play</button>

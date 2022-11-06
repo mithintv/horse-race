@@ -1,13 +1,12 @@
+import { PlayerType, SuitType } from "../models/types";
 import { useContext, useRef, useState } from "react";
 import GameContext from "../context/game-context";
 
-type Props = {
-  suit: string;
-  playerId: number;
-  playerName: string;
-};
+interface Props extends Omit<PlayerType, "suit"> {
+  suit: SuitType["type"];
+}
 
-function Suit(props: Props) {
+export default function Suit(props: Props) {
   const gameCtx = useContext(GameContext);
 
   // state to control if a suit is checked or not and ref to extract bet input
@@ -19,33 +18,32 @@ function Suit(props: Props) {
     setChecked(event.target.checked);
   }
 
-  // onBlur handler to reflect most recent name and bet to context api
-  function blurHandler() {
-    // const enteredName = nameInputRef.current?.value;
-    // const enteredBet = betInputRef.current?.value;
-    // gameCtx?.addBet(props.playerId, {
-    //   name: enteredName,
-    //   bet: enteredBet,
-    // });
+  // onChange handler to reflect most recent entered bet for particular suit
+  function changeHandler() {
+    const enteredBet = betInputRef.current?.value;
+    gameCtx?.addBet(props.id, {
+      type: props.suit,
+      bets: enteredBet,
+    });
   }
 
   return (
     <>
-      <label htmlFor={`${props.playerName} ${props.suit}`}>{props.suit}</label>
+      <label htmlFor={`${props.name} ${props.suit}`}>{props.suit}</label>
       <input
         type="checkbox"
-        id={`${props.playerName} ${props.suit}`}
-        name={`${props.playerName} ${props.suit}`}
+        id={`${props.name} ${props.suit}`}
+        name={`${props.name} ${props.suit}`}
         onChange={checkHandler}
         checked={checked}
       />
       {checked && (
         <input
-          onBlur={blurHandler}
+          onChange={changeHandler}
           ref={betInputRef}
           type="text"
-          id={`${props.playerName} ${props.suit} Bet`}
-          name={`${props.playerName} ${props.suit} Bet`}
+          id={`${props.name} ${props.suit} Bet`}
+          name={`${props.name} ${props.suit} Bet`}
           // display name of player conditionally based on entered name, otherwise default to instantiated player id
           placeholder={`${props.suit} Bet`}
         />
@@ -53,7 +51,3 @@ function Suit(props: Props) {
     </>
   );
 }
-
-export default Suit;
-
-`${"hi"}`;

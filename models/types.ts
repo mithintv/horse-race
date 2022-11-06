@@ -4,25 +4,25 @@ export declare interface AppProps {
 
 export type EmptyInput = string | undefined;
 
-export type Suit = {
+export interface SuitType {
   type: "Hearts" | "Spades" | "Diamonds" | "Clubs";
   bets: EmptyInput;
-};
+}
 
-export type Player = {
+export interface PlayerType {
   id: number;
   name: string;
-  suits: Suit[];
-};
+  suits: SuitType[];
+}
 
 export interface GameContextInt {
   rows: EmptyInput;
-  players: Player[];
+  players: PlayerType[];
   displayForm: boolean;
 
   addRow: (enteredRows: EmptyInput) => void;
   addPlayer: (enteredPlayers: EmptyInput) => void;
-  addName: (playerId: Player["id"], playerName: Player["name"]) => void;
-  addBet: (playerId: Player["id"], playerBet: Suit) => void;
+  addName: (playerId: PlayerType["id"], playerName: PlayerType["name"]) => void;
+  addBet: (playerId: PlayerType["id"], playerBet: SuitType) => void;
   setMode: () => void;
 }
