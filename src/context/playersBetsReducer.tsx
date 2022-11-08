@@ -1,10 +1,4 @@
-import {
-  EmptyInput,
-  PlayerType,
-  SuitType,
-  SuitSpecific,
-  suits,
-} from "../models/types";
+import { EmptyInput, PlayerType, SuitSpecific } from "../models/types";
 
 export const initialState: [] = [];
 
@@ -75,7 +69,7 @@ export default function playersBetsReducer(
           });
         }
         return filledArray;
-      } else return [...state];
+      } else return [];
 
     case "UPDATE_NAME":
       newState = [...state];

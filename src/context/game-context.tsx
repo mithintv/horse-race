@@ -31,7 +31,6 @@ export const GameProvider = (props: AppProps) => {
       type: "UPDATE_PLAYERS",
       payload: enteredPlayers,
     });
-    console.log(playersBets);
   };
 
   // add name function that points to reducer logic

@@ -6,23 +6,21 @@ export type EmptyInput = string | undefined;
 
 export type SuitTypes = "hearts" | "spades" | "diamonds" | "clubs";
 
-export const suits: SuitTypes[] = ["hearts", "spades", "diamonds", "clubs"];
+export interface SuitIcons {
+  type: SuitTypes;
+  icon: JSX.Element;
+}
+[];
 
-export type SuitSpecific = {
+export interface SuitSpecific {
   type: SuitTypes;
   checked: boolean;
   bets: EmptyInput;
-};
+}
 
 export type SuitType = {
   [key in SuitTypes]: SuitSpecific;
 };
-
-// export interface SuitType {
-//   type: "Hearts" | "Spades" | "Diamonds" | "Clubs";
-//   checked: boolean;
-//   bets: EmptyInput;
-// }
 
 export interface PlayerType {
   id: number;
