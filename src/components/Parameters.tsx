@@ -1,16 +1,8 @@
 import { useContext, useRef } from "react";
 import GameContext from "../context/game-context";
-
 import PlayerList from "./PlayerList";
 
-import {
-  Box,
-  Button,
-  Flex,
-  FormControl,
-  FormLabel,
-  Input,
-} from "@chakra-ui/react";
+import { Button, Flex, FormControl, FormLabel, Input } from "@chakra-ui/react";
 
 export default function Parameters() {
   const gameCtx = useContext(GameContext);
@@ -48,8 +40,9 @@ export default function Parameters() {
               name="rows"
               ref={totalRowsRef}
               onChange={rowChangeHandler}
+              placeholder=" "
             />
-            <FormLabel htmlFor="rows">Number of Rows</FormLabel>
+            <FormLabel>Number of Rows</FormLabel>
           </FormControl>
           <FormControl variant="floating" id="participants" isRequired>
             <Input
@@ -58,12 +51,15 @@ export default function Parameters() {
               name="participants"
               ref={totalPlayersRef}
               onChange={playerChangeHandler}
+              placeholder=" "
             />
             <FormLabel htmlFor="participants">Number of Players</FormLabel>
           </FormControl>
         </Flex>
         <div>{gameCtx?.players && <PlayerList />}</div>
-        <Button>Play</Button>
+        <Button width={"100%"} mt={3}>
+          Play
+        </Button>
       </form>
     </Flex>
   );
