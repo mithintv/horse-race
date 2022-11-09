@@ -1,36 +1,12 @@
-import { EmptyInput, PlayerType, SuitSpecific } from "../models/types";
-
-export const initialState: [] = [];
-
-export type ActionType =
-  | { type: "UPDATE_PLAYERS"; payload: EmptyInput }
-  | {
-      type: "UPDATE_NAME";
-      payload: {
-        playerId: PlayerType["id"];
-        playerName: PlayerType["name"];
-      };
-    }
-  | {
-      type: "UPDATE_SUIT";
-      payload: {
-        playerId: PlayerType["id"];
-        suit: SuitSpecific["type"];
-        checked: SuitSpecific["checked"];
-      };
-    }
-  | {
-      type: "UPDATE_BETS";
-      payload: {
-        playerId: PlayerType["id"];
-        suit: SuitSpecific["type"];
-        bets: EmptyInput;
-      };
-    };
+import type {
+  PlayerType,
+  SuitSpecific,
+  PlayersBetsActionType,
+} from "../models/types";
 
 export default function playersBetsReducer(
   state: PlayerType[],
-  action: ActionType
+  action: PlayersBetsActionType
 ) {
   let newState: PlayerType[],
     player: PlayerType | undefined,

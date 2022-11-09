@@ -2,7 +2,14 @@ import { useContext, useRef } from "react";
 import GameContext from "../context/game-context";
 import PlayerList from "./PlayerList";
 
-import { Button, Flex, FormControl, FormLabel, Input } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+} from "@chakra-ui/react";
 
 export default function Parameters() {
   const gameCtx = useContext(GameContext);
@@ -26,14 +33,17 @@ export default function Parameters() {
   // submission handler
   function submitHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    gameCtx?.setMode();
+    gameCtx?.setMode("PLAY_GAME");
   }
 
   return (
-    <Flex align="center" justify="center">
+    <Flex align="center" flexDir={"column"} justify="center">
+      <Heading as={"h2"} size="xl" mb={10} textAlign={"center"}>
+        Parameters
+      </Heading>
       <form onSubmit={submitHandler}>
         <Flex mb={4}>
-          <FormControl mr={2} variant="floating" id="rows" isRequired>
+          <FormControl mr={2} variant="floating" id="rows">
             <Input
               type="number"
               id="rows"
@@ -57,7 +67,7 @@ export default function Parameters() {
           </FormControl>
         </Flex>
         <div>{gameCtx?.players && <PlayerList />}</div>
-        <Button width={"100%"} mt={3}>
+        <Button type="submit" width={"100%"} mt={3}>
           Play
         </Button>
       </form>

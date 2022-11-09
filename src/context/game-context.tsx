@@ -1,20 +1,34 @@
 import React, { useState, useReducer, createContext } from "react";
 // custom types
-import { AppProps, EmptyInput, GameContextInt } from "../models/types";
+import type { AppProps, EmptyInput, GameContextInt } from "../models/types";
+import modeReducer, { initialModeState } from "./modeReducer";
 // custom functions and components
-import playersBetsReducer, { initialState } from "./playersBetsReducer";
+import playersBetsReducer from "./playersBetsReducer";
 
-const GameContext = createContext<GameContextInt | null>(null);
+const GameContext = createContext<GameContextInt | null>({
+  mode: {
+    parameters: true,
+    game: false,
+    summary: false,
+  },
+  rows: undefined,
+  players: [],
+
+  addRow: (enteredRows) => {},
+  addPlayer: (enteredPlayers) => {},
+  addName: (playerId, playerName) => {},
+  addSuit: (playerId, playerSuit) => {},
+  addBet: (playerId, playerBet) => {},
+  setMode: (ModeActionType) => {},
+});
+
+export default GameContext;
 
 export const GameProvider = (props: AppProps) => {
   // state for selecting total number of rows and resulting rows in-game, total number of players and resulting player object for names and bets, and for displaying game or form
   const [totalRows, setTotalRows] = useState<EmptyInput>(undefined);
-  const [playersBets, dispatchPlayersBets] = useReducer(
-    playersBetsReducer,
-    initialState
-  );
-  const [displayForm, setDisplayForm] =
-    useState<GameContextInt["displayForm"]>(true);
+  const [mode, dispatchMode] = useReducer(modeReducer, initialModeState);
+  const [playersBets, dispatchPlayersBets] = useReducer(playersBetsReducer, []);
 
   // store number of rows in context api
   const addRowHandler: GameContextInt["addRow"] = (enteredRows) => {
@@ -68,16 +82,16 @@ export const GameProvider = (props: AppProps) => {
     });
   };
 
-  const modeHandler = () => {
-    setDisplayForm(false);
+  const modeHandler: GameContextInt["setMode"] = (type) => {
+    dispatchMode({ type: type });
   };
 
   return (
     <GameContext.Provider
       value={{
+        mode: mode,
         rows: totalRows,
         players: playersBets,
-        displayForm: displayForm,
 
         addRow: addRowHandler,
         addPlayer: addPlayerHandler,
@@ -91,5 +105,3 @@ export const GameProvider = (props: AppProps) => {
     </GameContext.Provider>
   );
 };
-
-export default GameContext;

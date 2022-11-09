@@ -31,7 +31,11 @@ export interface PlayerType {
 export interface GameContextInt {
   rows: EmptyInput;
   players: PlayerType[];
-  displayForm: boolean;
+  mode: {
+    parameters: boolean;
+    game: boolean;
+    summary: boolean;
+  };
 
   addRow: (enteredRows: EmptyInput) => void;
   addPlayer: (enteredPlayers: EmptyInput) => void;
@@ -44,5 +48,37 @@ export interface GameContextInt {
     playerId: PlayerType["id"],
     playerBet: Omit<SuitSpecific, "checked">
   ) => void;
-  setMode: () => void;
+  setMode: (type: "RESET_GAME" | "PLAY_GAME" | "END_GAME") => void;
 }
+
+// reducer types
+export type PlayersBetsActionType =
+  | { type: "UPDATE_PLAYERS"; payload: EmptyInput }
+  | {
+      type: "UPDATE_NAME";
+      payload: {
+        playerId: PlayerType["id"];
+        playerName: PlayerType["name"];
+      };
+    }
+  | {
+      type: "UPDATE_SUIT";
+      payload: {
+        playerId: PlayerType["id"];
+        suit: SuitSpecific["type"];
+        checked: SuitSpecific["checked"];
+      };
+    }
+  | {
+      type: "UPDATE_BETS";
+      payload: {
+        playerId: PlayerType["id"];
+        suit: SuitSpecific["type"];
+        bets: EmptyInput;
+      };
+    };
+
+export type ModeActionType =
+  | { type: "RESET_GAME" }
+  | { type: "PLAY_GAME" }
+  | { type: "END_GAME" };
