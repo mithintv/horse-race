@@ -1,7 +1,7 @@
 import { PlayerType } from "../models/types";
 import { useRef, useContext } from "react";
 // context component
-import GameContext from "../context/game-context";
+import AppContext from "../context/app-context";
 // children & variable components
 import Suit from "./Suit";
 import { icons } from "../models/default";
@@ -19,23 +19,25 @@ import {
 } from "@chakra-ui/react";
 
 export default function Player(props: Pick<PlayerType, "id" | "name">) {
-  const gameCtx = useContext(GameContext);
+  const ctx = useContext(AppContext);
 
   // ref hook to update and extract name field per player
   const nameInputRef = useRef<HTMLInputElement>(null);
 
   // onChange handler for name input
   function changeHandler() {
-    const enteredName = nameInputRef.current?.value;
+    const enteredName = nameInputRef.current
+      ? nameInputRef.current.value
+      : null;
     if (enteredName) {
-      gameCtx?.addName(props.id, enteredName);
+      ctx?.addName(props.id, enteredName);
     } else {
-      gameCtx?.addName(props.id, `Player ${props.id}`);
+      ctx?.addName(props.id, `Player ${props.id}`);
     }
   }
 
   // extracting entered name for frontend from context api
-  const playerName = gameCtx?.players[props.id - 1].name;
+  const playerName = ctx?.players[props.id - 1].name;
 
   return (
     <>

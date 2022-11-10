@@ -1,4 +1,4 @@
-import type { GameContextInt, ModeActionType } from "../models/types";
+import type { ContextInt, ModeActionType } from "../models/types";
 
 export const initialModeState = {
   parameters: true,
@@ -7,7 +7,7 @@ export const initialModeState = {
 };
 
 export default function modeReducer(
-  state: GameContextInt["mode"],
+  state: ContextInt["mode"],
   action: ModeActionType
 ) {
   switch (action.type) {

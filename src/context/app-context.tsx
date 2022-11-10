@@ -1,17 +1,22 @@
 import React, { useState, useReducer, createContext } from "react";
 // custom types
-import type { AppProps, EmptyInput, GameContextInt } from "../models/types";
-import modeReducer, { initialModeState } from "./modeReducer";
+import type { AppProps, EmptyInput, ContextInt } from "../models/types";
 // custom functions and components
 import playersBetsReducer from "./playersBetsReducer";
+import gameStateReducer, { initialGameState } from "./gameStateReducer";
+import modeReducer, { initialModeState } from "./modeReducer";
 
-const GameContext = createContext<GameContextInt | null>({
+const AppContext = createContext<ContextInt>({
   mode: {
     parameters: true,
     game: false,
     summary: false,
   },
-  rows: undefined,
+  game: {
+    rows: null,
+    winner: null,
+  },
+
   players: [],
 
   addRow: (enteredRows) => {},
@@ -19,28 +24,33 @@ const GameContext = createContext<GameContextInt | null>({
   addName: (playerId, playerName) => {},
   addSuit: (playerId, playerSuit) => {},
   addBet: (playerId, playerBet) => {},
+  setWinner: (winningSuit) => {},
   setMode: (ModeActionType) => {},
 });
 
-export default GameContext;
+export default AppContext;
 
-export const GameProvider = (props: AppProps) => {
+export const AppProvider = (props: AppProps) => {
   // state for selecting total number of rows and resulting rows in-game, total number of players and resulting player object for names and bets, and for displaying game or form
-  const [totalRows, setTotalRows] = useState<EmptyInput>(undefined);
+  const [totalRows, setTotalRows] = useState<EmptyInput>(null);
   const [mode, dispatchMode] = useReducer(modeReducer, initialModeState);
   const [playersBets, dispatchPlayersBets] = useReducer(playersBetsReducer, []);
+  const [gameState, dispatchGameState] = useReducer(
+    gameStateReducer,
+    initialGameState
+  );
 
   // store number of rows in context api
-  const addRowHandler: GameContextInt["addRow"] = (enteredRows) => {
+  const addRowHandler: ContextInt["addRow"] = (enteredRows) => {
     if (enteredRows) {
       setTotalRows(enteredRows);
     } else {
-      setTotalRows(undefined);
+      setTotalRows(null);
     }
   };
 
   // add player function that points to reducer logic
-  const addPlayerHandler: GameContextInt["addPlayer"] = (enteredPlayers) => {
+  const addPlayerHandler: ContextInt["addPlayer"] = (enteredPlayers) => {
     dispatchPlayersBets({
       type: "UPDATE_PLAYERS",
       payload: enteredPlayers,
@@ -48,7 +58,7 @@ export const GameProvider = (props: AppProps) => {
   };
 
   // add name function that points to reducer logic
-  const addNameHandler: GameContextInt["addName"] = (playerId, playerName) => {
+  const addNameHandler: ContextInt["addName"] = (playerId, playerName) => {
     dispatchPlayersBets({
       type: "UPDATE_NAME",
       payload: {
@@ -59,7 +69,7 @@ export const GameProvider = (props: AppProps) => {
   };
 
   // add suit function that points to reducer logic
-  const addSuitHandler: GameContextInt["addSuit"] = (playerId, playerSuit) => {
+  const addSuitHandler: ContextInt["addSuit"] = (playerId, playerSuit) => {
     dispatchPlayersBets({
       type: "UPDATE_SUIT",
       payload: {
@@ -71,7 +81,7 @@ export const GameProvider = (props: AppProps) => {
   };
 
   // add bet function that points to reducer logic
-  const addBetHandler: GameContextInt["addBet"] = (playerId, playerBet) => {
+  const addBetHandler: ContextInt["addBet"] = (playerId, playerBet) => {
     dispatchPlayersBets({
       type: "UPDATE_BETS",
       payload: {
@@ -82,15 +92,24 @@ export const GameProvider = (props: AppProps) => {
     });
   };
 
-  const modeHandler: GameContextInt["setMode"] = (type) => {
+  const setWinnerHandler: ContextInt["setWinner"] = (winningSuit) => {
+    dispatchGameState({
+      type: "SET_WINNER",
+      payload: {
+        winner: winningSuit,
+      },
+    });
+  };
+
+  const modeHandler: ContextInt["setMode"] = (type) => {
     dispatchMode({ type: type });
   };
 
   return (
-    <GameContext.Provider
+    <AppContext.Provider
       value={{
         mode: mode,
-        rows: totalRows,
+        game: gameState,
         players: playersBets,
 
         addRow: addRowHandler,
@@ -98,10 +117,12 @@ export const GameProvider = (props: AppProps) => {
         addName: addNameHandler,
         addSuit: addSuitHandler,
         addBet: addBetHandler,
+
+        setWinner: setWinnerHandler,
         setMode: modeHandler,
       }}
     >
       {props.children}
-    </GameContext.Provider>
+    </AppContext.Provider>
   );
 };

@@ -1,22 +1,24 @@
 import { useContext, useRef } from "react";
-import GameContext from "../context/game-context";
+import AppContext from "../context/app-context";
 import { Button, Flex, Heading } from "@chakra-ui/react";
+import { SuitTypes } from "../models/types";
+import { icons } from "../models/default";
 
 export default function Game() {
-  const gameCtx = useContext(GameContext);
+  const ctx = useContext(AppContext);
 
   // temp game summary handler
   const heartsRef = useRef<HTMLButtonElement>(null);
   const spadesRef = useRef<HTMLButtonElement>(null);
   const diamondsRef = useRef<HTMLButtonElement>(null);
   const clubsRef = useRef<HTMLButtonElement>(null);
-  function clickHandler(
+  const clickHandler = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
-    gameCtx?.setMode("END_GAME");
+  ) => {
     const target = event.target as HTMLButtonElement;
-    // gameCtx?.setWinner(target.name);
-  }
+    ctx?.setMode("END_GAME");
+    ctx.setWinner(target.name);
+  };
 
   return (
     <Flex align={"center"} flexDir={"column"} justify={"center"}>
@@ -37,7 +39,7 @@ export default function Game() {
         <Button
           onClick={clickHandler.bind(spadesRef)}
           ref={spadesRef}
-          name={"spades"}
+          name="spades"
           type="submit"
           width={"24%"}
           mt={3}

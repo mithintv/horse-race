@@ -24,22 +24,22 @@ export default function playersBetsReducer(
               hearts: {
                 type: "hearts",
                 checked: false,
-                bets: undefined,
+                bets: null,
               },
               spades: {
                 type: "spades",
                 checked: false,
-                bets: undefined,
+                bets: null,
               },
               diamonds: {
                 type: "diamonds",
                 checked: false,
-                bets: undefined,
+                bets: null,
               },
               clubs: {
                 type: "clubs",
                 checked: false,
-                bets: undefined,
+                bets: null,
               },
             },
           });
