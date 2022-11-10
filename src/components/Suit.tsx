@@ -1,6 +1,6 @@
 import { PlayerType, SuitTypes } from "../models/types";
 import { useContext, useRef, useState } from "react";
-import GameContext from "../context/game-context";
+import AppContext from "../context/app-context";
 
 // chakra components
 import { Box, FormLabel, Input, Switch } from "@chakra-ui/react";
@@ -11,8 +11,8 @@ interface Props extends Pick<PlayerType, "id" | "name"> {
 }
 
 export default function Suit(props: Props) {
-  const gameCtx = useContext(GameContext);
-  const enteredBets = gameCtx?.players[props.id - 1].suits[props.suit].bets;
+  const ctx = useContext(AppContext);
+  const enteredBets = ctx?.players[props.id - 1].suits[props.suit].bets;
 
   // state to control if a suit is checked or not and ref to extract bet input
   const [checked, setChecked] = useState(false);
@@ -22,7 +22,7 @@ export default function Suit(props: Props) {
   function checkHandler(event: React.ChangeEvent<HTMLInputElement>) {
     setChecked(event.target.checked);
     console.log(event.target.checked);
-    gameCtx?.addSuit(props.id, {
+    ctx?.addSuit(props.id, {
       type: props.suit,
       checked: event.target.checked,
     });
@@ -30,8 +30,8 @@ export default function Suit(props: Props) {
 
   // onChange handler to reflect most recent entered bet for particular suit
   function changeHandler() {
-    const enteredBet = betInputRef.current?.value;
-    gameCtx?.addBet(props.id, {
+    const enteredBet = betInputRef.current ? betInputRef.current.value : null;
+    ctx?.addBet(props.id, {
       type: props.suit,
       bets: enteredBet,
     });
@@ -72,7 +72,6 @@ export default function Suit(props: Props) {
                 ? enteredBets
                 : `${props.suit[0].toUpperCase() + props.suit.slice(1)} Bet`
             }
-            value={enteredBets}
           />
         )}
       </Box>

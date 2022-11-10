@@ -1,16 +1,16 @@
 import { useContext } from "react";
 // context component
-import GameContext from "../context/game-context";
+import AppContext from "../context/app-context";
 // custom components
 import Player from "./Player";
 
 export default function PlayerList() {
-  const gameCtx = useContext(GameContext);
+  const ctx = useContext(AppContext);
 
   return (
     // for each entry in the array created in gameCtx.playerForm, return a Player component
     <>
-      {gameCtx?.players?.map((player, index) => {
+      {ctx?.players?.map((player, index) => {
         return <Player key={index} id={player.id} name={player.name} />;
       })}
     </>
