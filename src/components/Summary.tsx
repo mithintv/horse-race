@@ -2,7 +2,7 @@ import { useContext } from "react";
 import AppContext from "../context/app-context";
 
 import {
-  Divider,
+  Button,
   Flex,
   Heading,
   Table,
@@ -45,8 +45,15 @@ export default function Summary() {
       player.suits[losingSuits[2].type].bets
   );
 
+  const clickHandler = () => {
+    ctx.setMode("RESET_GAME");
+  };
   return (
-    <>
+    <Flex flexDir={"column"} align={"center"}>
+      <Button onClick={clickHandler} width={"150px"} mb={20}>
+        New Game
+      </Button>
+
       <Heading
         as={"h2"}
         size="xl"
@@ -69,6 +76,7 @@ export default function Summary() {
         <Flex mb={10} justifyContent={"center"}>
           <TableContainer minW={"480px"}>
             <Table>
+              <TableCaption>Winning Wagers</TableCaption>
               <Thead>
                 <Tr>
                   <Th textAlign={"center"}>Players</Th>
@@ -103,6 +111,7 @@ export default function Summary() {
         <Flex justifyContent={"center"}>
           <TableContainer minW={"480px"}>
             <Table>
+              <TableCaption>Losing Wagers</TableCaption>
               <Thead>
                 <Tr>
                   <Th textAlign={"center"}>Players</Th>
@@ -147,6 +156,6 @@ export default function Summary() {
           </TableContainer>
         </Flex>
       </Flex>
-    </>
+    </Flex>
   );
 }

@@ -46,7 +46,9 @@ export default function Parameters() {
 
   return (
     <Flex align="center" flexDir={"column"} justify="center">
-      <Button onClick={stateHandler}>Next</Button>
+      <Button mb={10} onClick={stateHandler}>
+        Next
+      </Button>
       <Heading as={"h2"} size="xl" mb={10} textAlign={"center"}>
         Parameters
       </Heading>
