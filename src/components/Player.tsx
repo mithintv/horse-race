@@ -13,9 +13,13 @@ import {
   AccordionPanel,
   AccordionIcon,
   Box,
+  Button,
+  Divider,
   FormControl,
   FormLabel,
+  Heading,
   Input,
+  Text,
 } from "@chakra-ui/react";
 
 export default function Player(props: Pick<PlayerType, "id" | "name">) {
@@ -83,6 +87,17 @@ export default function Player(props: Pick<PlayerType, "id" | "name">) {
                 );
               })}
             </Box>
+            <Divider mb={5} />
+            <Heading as={"h3"} size="md" mb={5} textAlign={"center"}>
+              Current Wagers
+            </Heading>
+            <Heading as={"h4"} size="sm" mb={10} textAlign={"center"}>
+              Hearts
+            </Heading>
+            {ctx.players[props.id] && (
+              <Text>{ctx.players[props.id].suits.hearts.bets}</Text>
+            )}
+            <Button>Add Bet</Button>
           </AccordionPanel>
         </AccordionItem>
       </Accordion>

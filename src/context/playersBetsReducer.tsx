@@ -4,6 +4,165 @@ import type {
   PlayersBetsActionType,
 } from "../models/types";
 
+export const playersBetsInitialState: PlayerType[] = [
+  {
+    id: 1,
+    name: "Player 1",
+    suits: {
+      hearts: {
+        type: "hearts",
+        checked: true,
+        bets: "1 shot",
+      },
+      spades: {
+        type: "spades",
+        checked: false,
+        bets: null,
+      },
+      diamonds: {
+        type: "diamonds",
+        checked: false,
+        bets: null,
+      },
+      clubs: {
+        type: "clubs",
+        checked: false,
+        bets: null,
+      },
+    },
+  },
+  {
+    id: 2,
+    name: "Player 2",
+    suits: {
+      hearts: {
+        type: "hearts",
+        checked: false,
+        bets: null,
+      },
+      spades: {
+        type: "spades",
+        checked: true,
+        bets: "1 shot",
+      },
+      diamonds: {
+        type: "diamonds",
+        checked: false,
+        bets: null,
+      },
+      clubs: {
+        type: "clubs",
+        checked: false,
+        bets: null,
+      },
+    },
+  },
+  {
+    id: 3,
+    name: "Player 3",
+    suits: {
+      hearts: {
+        type: "hearts",
+        checked: false,
+        bets: null,
+      },
+      spades: {
+        type: "spades",
+        checked: false,
+        bets: null,
+      },
+      diamonds: {
+        type: "diamonds",
+        checked: true,
+        bets: "1 shot",
+      },
+      clubs: {
+        type: "clubs",
+        checked: false,
+        bets: null,
+      },
+    },
+  },
+  {
+    id: 4,
+    name: "Player 4",
+    suits: {
+      hearts: {
+        type: "hearts",
+        checked: false,
+        bets: null,
+      },
+      spades: {
+        type: "spades",
+        checked: false,
+        bets: null,
+      },
+      diamonds: {
+        type: "diamonds",
+        checked: false,
+        bets: null,
+      },
+      clubs: {
+        type: "clubs",
+        checked: true,
+        bets: "1 shot",
+      },
+    },
+  },
+  {
+    id: 5,
+    name: "Player 5",
+    suits: {
+      hearts: {
+        type: "hearts",
+        checked: true,
+        bets: "1 shot",
+      },
+      spades: {
+        type: "spades",
+        checked: true,
+        bets: "1 shot",
+      },
+      diamonds: {
+        type: "diamonds",
+        checked: false,
+        bets: null,
+      },
+      clubs: {
+        type: "clubs",
+        checked: false,
+        bets: null,
+      },
+    },
+  },
+  {
+    id: 6,
+    name: "Player 6",
+    suits: {
+      hearts: {
+        type: "hearts",
+        checked: false,
+        bets: null,
+      },
+      spades: {
+        type: "spades",
+        checked: false,
+        bets: null,
+      },
+      diamonds: {
+        type: "diamonds",
+        checked: true,
+        bets: "1 shot",
+      },
+      clubs: {
+        type: "clubs",
+        checked: true,
+        bets: "1 shot",
+      },
+    },
+  },
+];
+
 export default function playersBetsReducer(
   state: PlayerType[],
   action: PlayersBetsActionType

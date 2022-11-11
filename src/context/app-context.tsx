@@ -2,7 +2,9 @@ import React, { useState, useReducer, createContext } from "react";
 // custom types
 import type { AppProps, EmptyInput, ContextInt } from "../models/types";
 // custom functions and components
-import playersBetsReducer from "./playersBetsReducer";
+import playersBetsReducer, {
+  playersBetsInitialState,
+} from "./playersBetsReducer";
 import gameStateReducer, { initialGameState } from "./gameStateReducer";
 import modeReducer, { initialModeState } from "./modeReducer";
 
@@ -34,7 +36,10 @@ export const AppProvider = (props: AppProps) => {
   // state for selecting total number of rows and resulting rows in-game, total number of players and resulting player object for names and bets, and for displaying game or form
   const [totalRows, setTotalRows] = useState<EmptyInput>(null);
   const [mode, dispatchMode] = useReducer(modeReducer, initialModeState);
-  const [playersBets, dispatchPlayersBets] = useReducer(playersBetsReducer, []);
+  const [playersBets, dispatchPlayersBets] = useReducer(
+    playersBetsReducer,
+    playersBetsInitialState
+  );
   const [gameState, dispatchGameState] = useReducer(
     gameStateReducer,
     initialGameState
@@ -51,10 +56,10 @@ export const AppProvider = (props: AppProps) => {
 
   // add player function that points to reducer logic
   const addPlayerHandler: ContextInt["addPlayer"] = (enteredPlayers) => {
-    dispatchPlayersBets({
-      type: "UPDATE_PLAYERS",
-      payload: enteredPlayers,
-    });
+    // dispatchPlayersBets({
+    //   type: "UPDATE_PLAYERS",
+    //   payload: enteredPlayers,
+    // });
   };
 
   // add name function that points to reducer logic
