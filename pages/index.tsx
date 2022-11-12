@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import AppContext from "../src/context/app-context";
 
-import Game from "../src/components/Game";
-import Parameters from "../src/components/Parameters";
-import Summary from "../src/components/Summary";
+import Game from "../src/components/modes/Game";
+import Parameters from "../src/components/modes/Parameters";
+import Summary from "../src/components/modes/Summary";
 
 import { Heading, Wrap } from "@chakra-ui/react";
 

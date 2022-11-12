@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import AppContext from "../context/app-context";
+import AppContext from "../../context/app-context";
 
 import {
   Button,
@@ -15,7 +15,7 @@ import {
   TableCaption,
   TableContainer,
 } from "@chakra-ui/react";
-import { icons } from "../models/default";
+import { icons } from "../../models/default";
 
 export default function Summary() {
   const ctx = useContext(AppContext);

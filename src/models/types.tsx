@@ -19,13 +19,13 @@ export interface SuitSpecific {
 }
 
 export type SuitType = {
-  [key in SuitTypes]: SuitSpecific;
+  [key in SuitTypes]: SuitSpecific | null;
 };
 
 export interface PlayerType {
   id: number;
   name: string;
-  suits: SuitType;
+  suits: SuitType | null;
 }
 
 export interface ContextInt {

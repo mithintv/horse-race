@@ -1,8 +1,8 @@
 import { useContext, useRef } from "react";
-import AppContext from "../context/app-context";
+import AppContext from "../../context/app-context";
 import { Button, Flex, Heading } from "@chakra-ui/react";
-import { SuitTypes } from "../models/types";
-import { icons } from "../models/default";
+import { SuitTypes } from "../../models/types";
+import { icons } from "../../models/default";
 
 export default function Game() {
   const ctx = useContext(AppContext);

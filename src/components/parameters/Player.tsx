@@ -1,10 +1,11 @@
-import { PlayerType } from "../models/types";
+import { PlayerType } from "../../models/types";
 import { useRef, useContext } from "react";
 // context component
-import AppContext from "../context/app-context";
+import AppContext from "../../context/app-context";
 // children & variable components
 import Suit from "./Suit";
-import { icons } from "../models/default";
+import CurrentWagers from "./CurrentWagers";
+import { icons } from "../../models/default";
 // chakra components
 import {
   Accordion,
@@ -87,15 +88,8 @@ export default function Player(props: Pick<PlayerType, "id" | "name">) {
                 );
               })}
             </Box>
-            <Divider mb={5} />
-            <Heading as={"h3"} size="md" mb={5} textAlign={"center"}>
-              Current Wagers
-            </Heading>
-            <Heading as={"h4"} size="sm" mb={10} textAlign={"center"}>
-              Hearts
-            </Heading>
-            {ctx.players[props.id] && (
-              <Text>{ctx.players[props.id].suits.hearts.bets}</Text>
+            {ctx.players[props.id]?.suits && (
+              <CurrentWagers id={props.id} name={props.name} />
             )}
             <Button>Add Bet</Button>
           </AccordionPanel>

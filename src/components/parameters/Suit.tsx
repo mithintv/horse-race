@@ -1,6 +1,6 @@
-import { PlayerType, SuitTypes } from "../models/types";
+import { PlayerType, SuitTypes } from "../../models/types";
 import { useContext, useRef, useState } from "react";
-import AppContext from "../context/app-context";
+import AppContext from "../../context/app-context";
 
 // chakra components
 import { Box, FormLabel, Input, Switch } from "@chakra-ui/react";
@@ -12,26 +12,30 @@ interface Props extends Pick<PlayerType, "id" | "name"> {
 
 export default function Suit(props: Props) {
   const ctx = useContext(AppContext);
-  const enteredBets = ctx?.players[props.id - 1].suits[props.suit].bets;
+  const enteredBets = ctx.players[props.id - 1].suits![props.suit]!.bets;
+  const checked = ctx.players[props.id - 1].suits![props.suit]!.checked;
 
-  // state to control if a suit is checked or not and ref to extract bet input
-  const [checked, setChecked] = useState(false);
+  // ref to extract bet input
   const betInputRef = useRef<HTMLInputElement>(null);
 
   // function to handle onChange event (interacting with checkbox)
   function checkHandler(event: React.ChangeEvent<HTMLInputElement>) {
-    setChecked(event.target.checked);
-    console.log(event.target.checked);
-    ctx?.addSuit(props.id, {
-      type: props.suit,
-      checked: event.target.checked,
-    });
+    if (event.target.checked) {
+      ctx.addSuit(props.id, {
+        type: props.suit,
+        checked: event.target.checked,
+      });
+    } else
+      ctx.addSuit(props.id, {
+        type: props.suit,
+        checked: event.target.checked,
+      });
   }
 
   // onChange handler to reflect most recent entered bet for particular suit
   function changeHandler() {
     const enteredBet = betInputRef.current ? betInputRef.current.value : null;
-    ctx?.addBet(props.id, {
+    ctx.addBet(props.id, {
       type: props.suit,
       bets: enteredBet,
     });
@@ -55,7 +59,7 @@ export default function Suit(props: Props) {
           id={`${props.name} ${props.suit}`}
           name={`${props.name} ${props.suit}`}
           onChange={checkHandler}
-          checked={checked}
+          isChecked={checked}
         />
         {checked && (
           <Input

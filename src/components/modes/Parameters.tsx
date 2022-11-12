@@ -1,6 +1,6 @@
 import { useContext, useRef } from "react";
-import AppContext from "../context/app-context";
-import PlayerList from "./PlayerList";
+import AppContext from "../../context/app-context";
+import PlayerList from "../parameters/PlayerList";
 
 import {
   Button,

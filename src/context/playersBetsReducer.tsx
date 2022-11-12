@@ -209,23 +209,22 @@ export default function playersBetsReducer(
     case "UPDATE_NAME":
       newState = [...state];
       player = newState.find((player) => player.id === action.payload.playerId);
-      if (player) {
-        player.name = action.payload.playerName;
-      } else console.error(`Player with ${action.payload.playerId} not found`);
+      player!.name = action.payload.playerName;
       return newState;
 
     case "UPDATE_SUIT":
       newState = [...state];
       player = newState.find((player) => player.id === action.payload.playerId);
       selectedSuit = action.payload.suit;
-      if (player) player.suits[selectedSuit].checked = action.payload.checked;
+      player!.suits![selectedSuit]!.checked = action.payload.checked;
+      if (!action.payload.checked) player!.suits![selectedSuit]!.bets = null;
       return newState;
 
     case "UPDATE_BETS":
       newState = [...state];
       player = newState.find((player) => player.id === action.payload.playerId);
       selectedSuit = action.payload.suit;
-      if (player) player.suits[selectedSuit].bets = action.payload.bets;
+      player!.suits![selectedSuit]!.bets = action.payload.bets;
       return newState;
   }
 }
