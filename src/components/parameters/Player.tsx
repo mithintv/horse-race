@@ -1,4 +1,4 @@
-import { PlayerType } from "../../models/types";
+import type { PlayerType } from "../../models/types";
 import { useRef, useContext } from "react";
 // context component
 import AppContext from "../../context/app-context";
@@ -25,6 +25,12 @@ import {
 
 export default function Player(props: Pick<PlayerType, "id" | "name">) {
   const ctx = useContext(AppContext);
+  const player = ctx.players[props.id - 1];
+  const showCurrentWagers =
+    player?.suits?.hearts?.bets ||
+    player?.suits?.spades?.bets ||
+    player?.suits?.diamonds?.bets ||
+    player?.suits?.clubs?.bets;
 
   // ref hook to update and extract name field per player
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -42,7 +48,7 @@ export default function Player(props: Pick<PlayerType, "id" | "name">) {
   }
 
   // extracting entered name for frontend from context api
-  const playerName = ctx?.players[props.id - 1].name;
+  const playerName = ctx.players[props.id - 1].name;
 
   return (
     <>
@@ -88,10 +94,9 @@ export default function Player(props: Pick<PlayerType, "id" | "name">) {
                 );
               })}
             </Box>
-            {ctx.players[props.id]?.suits && (
+            {showCurrentWagers && (
               <CurrentWagers id={props.id} name={props.name} />
             )}
-            <Button>Add Bet</Button>
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
