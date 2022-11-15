@@ -15,17 +15,17 @@ export interface SuitIcons {
 export interface SuitSpecific {
   type: SuitTypes;
   checked: boolean;
-  bets: EmptyInput;
+  wagers: string[];
 }
 
 export type SuitType = {
-  [key in SuitTypes]: SuitSpecific | null;
+  [key in SuitTypes]: SuitSpecific;
 };
 
 export interface PlayerType {
   id: number;
   name: string;
-  suits: SuitType | null;
+  suits: SuitType;
 }
 
 export interface ContextInt {
@@ -45,11 +45,15 @@ export interface ContextInt {
   addName: (playerId: PlayerType["id"], playerName: PlayerType["name"]) => void;
   addSuit: (
     playerId: PlayerType["id"],
-    playerSuit: Omit<SuitSpecific, "bets">
+    playerSuit: Omit<SuitSpecific, "wagers">
   ) => void;
-  addBet: (
+  addWager: (
     playerId: PlayerType["id"],
-    playerBet: Omit<SuitSpecific, "checked">
+    wager: { type: SuitTypes; text: string }
+  ) => void;
+  removeWager: (
+    playerId: PlayerType["id"],
+    wager: { type: SuitTypes; id: number }
   ) => void;
 
   setWinner: (winningSuit: string) => void;
@@ -80,11 +84,19 @@ export type PlayersBetsActionType =
       };
     }
   | {
-      type: "UPDATE_BETS";
+      type: "ADD_WAGER";
       payload: {
         playerId: PlayerType["id"];
-        suit: SuitSpecific["type"];
-        bets: EmptyInput;
+        suit: SuitTypes;
+        wager: string;
+      };
+    }
+  | {
+      type: "REMOVE_WAGER";
+      payload: {
+        playerId: PlayerType["id"];
+        suit: SuitTypes;
+        wagerId: number;
       };
     };
 

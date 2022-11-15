@@ -12,22 +12,22 @@ export const playersBetsInitialState: PlayerType[] = [
       hearts: {
         type: "hearts",
         checked: true,
-        bets: "1 shot",
+        wagers: ["1 shot"],
       },
       spades: {
         type: "spades",
         checked: false,
-        bets: null,
+        wagers: [],
       },
       diamonds: {
         type: "diamonds",
         checked: false,
-        bets: null,
+        wagers: [],
       },
       clubs: {
         type: "clubs",
         checked: false,
-        bets: null,
+        wagers: [],
       },
     },
   },
@@ -38,22 +38,22 @@ export const playersBetsInitialState: PlayerType[] = [
       hearts: {
         type: "hearts",
         checked: false,
-        bets: null,
+        wagers: [],
       },
       spades: {
         type: "spades",
         checked: true,
-        bets: "1 shot",
+        wagers: ["1 shot"],
       },
       diamonds: {
         type: "diamonds",
         checked: false,
-        bets: null,
+        wagers: [],
       },
       clubs: {
         type: "clubs",
         checked: false,
-        bets: null,
+        wagers: [],
       },
     },
   },
@@ -64,22 +64,22 @@ export const playersBetsInitialState: PlayerType[] = [
       hearts: {
         type: "hearts",
         checked: false,
-        bets: null,
+        wagers: [],
       },
       spades: {
         type: "spades",
         checked: false,
-        bets: null,
+        wagers: [],
       },
       diamonds: {
         type: "diamonds",
         checked: true,
-        bets: "1 shot",
+        wagers: ["1 shot"],
       },
       clubs: {
         type: "clubs",
         checked: false,
-        bets: null,
+        wagers: [],
       },
     },
   },
@@ -90,22 +90,22 @@ export const playersBetsInitialState: PlayerType[] = [
       hearts: {
         type: "hearts",
         checked: false,
-        bets: null,
+        wagers: [],
       },
       spades: {
         type: "spades",
         checked: false,
-        bets: null,
+        wagers: [],
       },
       diamonds: {
         type: "diamonds",
         checked: false,
-        bets: null,
+        wagers: [],
       },
       clubs: {
         type: "clubs",
         checked: true,
-        bets: "1 shot",
+        wagers: ["1 shot"],
       },
     },
   },
@@ -116,22 +116,22 @@ export const playersBetsInitialState: PlayerType[] = [
       hearts: {
         type: "hearts",
         checked: true,
-        bets: "1 shot",
+        wagers: ["1 shot"],
       },
       spades: {
         type: "spades",
         checked: true,
-        bets: "1 shot",
+        wagers: ["1 shot"],
       },
       diamonds: {
         type: "diamonds",
         checked: false,
-        bets: null,
+        wagers: [],
       },
       clubs: {
         type: "clubs",
         checked: false,
-        bets: null,
+        wagers: [],
       },
     },
   },
@@ -142,22 +142,22 @@ export const playersBetsInitialState: PlayerType[] = [
       hearts: {
         type: "hearts",
         checked: false,
-        bets: null,
+        wagers: [],
       },
       spades: {
         type: "spades",
         checked: false,
-        bets: null,
+        wagers: [],
       },
       diamonds: {
         type: "diamonds",
         checked: true,
-        bets: "1 shot",
+        wagers: ["1 shot"],
       },
       clubs: {
         type: "clubs",
         checked: true,
-        bets: "1 shot",
+        wagers: ["1 shot"],
       },
     },
   },
@@ -183,22 +183,22 @@ export default function playersBetsReducer(
               hearts: {
                 type: "hearts",
                 checked: false,
-                bets: null,
+                wagers: [],
               },
               spades: {
                 type: "spades",
                 checked: false,
-                bets: null,
+                wagers: [],
               },
               diamonds: {
                 type: "diamonds",
                 checked: false,
-                bets: null,
+                wagers: [],
               },
               clubs: {
                 type: "clubs",
                 checked: false,
-                bets: null,
+                wagers: [],
               },
             },
           });
@@ -217,14 +217,21 @@ export default function playersBetsReducer(
       player = newState.find((player) => player.id === action.payload.playerId);
       selectedSuit = action.payload.suit;
       player!.suits![selectedSuit]!.checked = action.payload.checked;
-      if (!action.payload.checked) player!.suits![selectedSuit]!.bets = null;
+      if (!action.payload.checked) player!.suits![selectedSuit]!.wagers = [];
       return newState;
 
-    case "UPDATE_BETS":
+    case "ADD_WAGER":
       newState = [...state];
       player = newState.find((player) => player.id === action.payload.playerId);
       selectedSuit = action.payload.suit;
-      player!.suits![selectedSuit]!.bets = action.payload.bets;
+      player!.suits![selectedSuit]?.wagers.push(action.payload.wager);
+      return newState;
+
+    case "REMOVE_WAGER":
+      newState = [...state];
+      player = newState.find((player) => player.id === action.payload.playerId);
+      selectedSuit = action.payload.suit;
+      player!.suits![selectedSuit]!.wagers.splice(action.payload.wagerId, 1);
       return newState;
   }
 }

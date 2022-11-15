@@ -72,6 +72,7 @@ export default function Parameters() {
               name="participants"
               ref={totalPlayersRef}
               onChange={playerChangeHandler}
+              value={ctx.players ? ctx.players.length.toString() : ""}
               placeholder=" "
             />
             <FormLabel htmlFor="participants">Number of Players</FormLabel>

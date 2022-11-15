@@ -1,52 +1,39 @@
-import { useContext } from "react";
-import AppContext from "../../context/app-context";
 import type { PlayerType } from "../../models/types";
-// chakra components
-import { Divider, Flex, Heading, Text } from "@chakra-ui/react";
+import React, { useContext } from "react";
+import AppContext from "../../context/app-context";
+import Wager from "./Wager";
+
 import { icons } from "../../models/default";
+import { Flex } from "@chakra-ui/react";
 
 export default function CurrentWagers(props: Pick<PlayerType, "id" | "name">) {
   const ctx = useContext(AppContext);
   const player = ctx.players[props.id - 1];
 
   return (
-    <Flex flexDir="column" align="center">
-      <Divider mt={2} mb={5} />
-      <Heading as={"h3"} size="md" mb={5} textAlign={"center"}>
-        Current Wagers
-      </Heading>
-      {player.suits![icons[0].type]!.bets && (
-        <Flex flexDir="column" mb={3}>
-          <Heading as={"h4"} size="sm" mb={2} textAlign={"center"}>
-            Hearts
-          </Heading>
-          <Text textAlign={"center"}>{player!.suits!.hearts!.bets}</Text>
-        </Flex>
-      )}
-      {player.suits![icons[1].type]!.bets && (
-        <Flex flexDir="column" mb={3}>
-          <Heading as={"h4"} size="sm" mb={2} textAlign={"center"}>
-            Spades
-          </Heading>
-          <Text textAlign={"center"}>{player!.suits!.spades!.bets}</Text>
-        </Flex>
-      )}
-      {player.suits![icons[2].type]!.bets && (
-        <Flex flexDir="column" mb={3}>
-          <Heading as={"h4"} size="sm" mb={2} textAlign={"center"}>
-            Diamonds
-          </Heading>
-          <Text textAlign={"center"}>{player!.suits!.diamonds!.bets}</Text>
-        </Flex>
-      )}
-      {player.suits![icons[3].type]!.bets && (
-        <Flex flexDir="column" mb={3}>
-          <Heading as={"h4"} size="sm" mb={2} textAlign={"center"}>
-            Clubs
-          </Heading>
-          <Text textAlign={"center"}>{player!.suits!.clubs!.bets}</Text>
-        </Flex>
-      )}
+    <Flex flexDir="column" mb={3}>
+      {icons.map((icon, index) => {
+        return (
+          player.suits[icon.type].wagers.length > 0 && (
+            <Flex key={index} flexDir="column" alignItems={"center"} mb={2}>
+              {icon.icon}
+              <Flex flexDir="column" mb={2}>
+                {player!.suits![icon.type]!.wagers.map((wager, index) => {
+                  return (
+                    <Wager
+                      key={index}
+                      suit={icon.type}
+                      text={wager}
+                      id={index}
+                      playerId={props.id}
+                    />
+                  );
+                })}
+              </Flex>
+            </Flex>
+          )
+        );
+      })}
     </Flex>
   );
 }

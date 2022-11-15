@@ -22,7 +22,7 @@ export default function Summary() {
   const type = icons.find((icon) => icon.type === ctx?.game.winner);
   const winners = ctx.players.filter(
     (player) =>
-      player.suits[type!.type].checked && player.suits[type!.type].bets
+      player.suits![type!.type]!.checked && player.suits![type!.type]!.wagers
   );
 
   // losers
@@ -31,18 +31,18 @@ export default function Summary() {
 
   const suitOne = ctx.players.filter(
     (player) =>
-      player.suits[losingSuits[0].type].checked &&
-      player.suits[losingSuits[0].type].bets
+      player.suits![losingSuits[0].type]!.checked &&
+      player.suits![losingSuits[0].type]!.wagers
   );
   const suitTwo = ctx.players.filter(
     (player) =>
-      player.suits[losingSuits[1].type].checked &&
-      player.suits[losingSuits[1].type].bets
+      player.suits![losingSuits[1].type]!.checked &&
+      player.suits![losingSuits[1].type]!.wagers
   );
   const suitThree = ctx.players.filter(
     (player) =>
-      player.suits[losingSuits[2].type].checked &&
-      player.suits[losingSuits[2].type].bets
+      player.suits![losingSuits[2].type]!.checked &&
+      player.suits![losingSuits[2].type]!.wagers
   );
 
   const clickHandler = () => {
@@ -84,12 +84,12 @@ export default function Summary() {
                 </Tr>
               </Thead>
               <Tbody>
-                {winners.map((winner) => {
+                {winners.map((winner, index) => {
                   return (
-                    <Tr>
+                    <Tr key={index}>
                       <Td textAlign={"center"}>{winner.name}</Td>
                       <Td textAlign={"center"}>
-                        {winner.suits[type!.type].bets}
+                        {winner.suits![type!.type]!.wagers}
                       </Td>
                     </Tr>
                   );
@@ -119,34 +119,34 @@ export default function Summary() {
                 </Tr>
               </Thead>
               <Tbody>
-                {suitOne.map((suit) => {
+                {suitOne.map((suit, index) => {
                   return (
-                    <Tr>
+                    <Tr key={index}>
                       <Td textAlign={"center"}>{suit.name}</Td>
                       <Td textAlign={"center"}>
-                        {suit.suits[losingSuits[0].type].bets}
+                        {suit.suits![losingSuits[0].type]!.wagers}
                       </Td>
                     </Tr>
                   );
                 })}
 
-                {suitTwo.map((suit) => {
+                {suitTwo.map((suit, index) => {
                   return (
-                    <Tr>
+                    <Tr key={index}>
                       <Td textAlign={"center"}>{suit.name}</Td>
                       <Td textAlign={"center"}>
-                        {suit.suits[losingSuits[1].type].bets}
+                        {suit.suits![losingSuits[1].type]!.wagers}
                       </Td>
                     </Tr>
                   );
                 })}
 
-                {suitThree.map((suit) => {
+                {suitThree.map((suit, index) => {
                   return (
-                    <Tr>
+                    <Tr key={index}>
                       <Td textAlign={"center"}>{suit.name}</Td>
                       <Td textAlign={"center"}>
-                        {suit.suits[losingSuits[2].type].bets}
+                        {suit.suits![losingSuits[2].type]!.wagers}
                       </Td>
                     </Tr>
                   );

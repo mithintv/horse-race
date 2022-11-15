@@ -27,10 +27,10 @@ export default function Player(props: Pick<PlayerType, "id" | "name">) {
   const ctx = useContext(AppContext);
   const player = ctx.players[props.id - 1];
   const showCurrentWagers =
-    player?.suits?.hearts?.bets ||
-    player?.suits?.spades?.bets ||
-    player?.suits?.diamonds?.bets ||
-    player?.suits?.clubs?.bets;
+    player!.suits!.hearts!.wagers ||
+    player!.suits!.spades!.wagers ||
+    player!.suits!.diamonds!.wagers ||
+    player!.suits!.clubs!.wagers;
 
   // ref hook to update and extract name field per player
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -61,7 +61,7 @@ export default function Player(props: Pick<PlayerType, "id" | "name">) {
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel backgroundColor={"#F9F9F9"} pb={0}>
-            <FormControl mr={2} variant="accordion" id="rows" isRequired>
+            <FormControl mr={2} variant="accordion" id="rows">
               <Input
                 type="text"
                 id={`${props.name} Name`}

@@ -25,7 +25,8 @@ const AppContext = createContext<ContextInt>({
   addPlayer: (enteredPlayers) => {},
   addName: (playerId, playerName) => {},
   addSuit: (playerId, playerSuit) => {},
-  addBet: (playerId, playerBet) => {},
+  addWager: (playerId, wager) => {},
+  removeWager: (playerId, wager) => {},
   setWinner: (winningSuit) => {},
   setMode: (ModeActionType) => {},
 });
@@ -86,13 +87,24 @@ export const AppProvider = (props: AppProps) => {
   };
 
   // add bet function that points to reducer logic
-  const addBetHandler: ContextInt["addBet"] = (playerId, playerBet) => {
+  const addWagerHandler: ContextInt["addWager"] = (playerId, wager) => {
     dispatchPlayersBets({
-      type: "UPDATE_BETS",
+      type: "ADD_WAGER",
       payload: {
         playerId: playerId,
-        suit: playerBet.type,
-        bets: playerBet.bets,
+        suit: wager.type,
+        wager: wager.text,
+      },
+    });
+  };
+
+  const removeWagerHandler: ContextInt["removeWager"] = (playerId, wager) => {
+    dispatchPlayersBets({
+      type: "REMOVE_WAGER",
+      payload: {
+        playerId: playerId,
+        suit: wager.type,
+        wagerId: wager.id,
       },
     });
   };
@@ -121,7 +133,8 @@ export const AppProvider = (props: AppProps) => {
         addPlayer: addPlayerHandler,
         addName: addNameHandler,
         addSuit: addSuitHandler,
-        addBet: addBetHandler,
+        addWager: addWagerHandler,
+        removeWager: removeWagerHandler,
 
         setWinner: setWinnerHandler,
         setMode: modeHandler,
