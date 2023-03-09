@@ -1,8 +1,9 @@
 import { useContext, useRef } from "react";
 import AppContext from "../context/app-context";
+import { Card } from "./Card";
+import { hearts, spades, diamonds, clubs } from "../models/deck";
+
 import { Button, Flex, Heading } from "@chakra-ui/react";
-import { SuitTypes } from "../models/types";
-import { icons } from "../models/default";
 
 export default function Game() {
   const ctx = useContext(AppContext);
@@ -25,6 +26,21 @@ export default function Game() {
       <Heading as={"h2"} size="xl" mb={10} textAlign={"center"}>
         Game
       </Heading>
+      <Flex wrap="wrap" flexDir="row">
+        {Array.from(hearts).map((card) => {
+          return <Card suit={hearts} card={card[0]} />;
+        })}
+        {Array.from(spades).map((card) => {
+          return <Card suit={spades} card={card[0]} />;
+        })}
+        {Array.from(diamonds).map((card) => {
+          return <Card suit={diamonds} card={card[0]} />;
+        })}
+        {Array.from(clubs).map((card) => {
+          return <Card suit={clubs} card={card[0]} />;
+        })}
+      </Flex>
+      <Button>Click</Button>
       <Flex justifyContent={"space-between"}>
         <Button
           onClick={clickHandler.bind(heartsRef)}
