@@ -1,7 +1,7 @@
-import { useContext, useRef } from "react";
+import { useState, useContext, useRef } from "react";
 import AppContext from "../context/app-context";
 import { Card } from "./Card";
-import { hearts, spades, diamonds, clubs } from "../models/deck";
+import { hearts, spades, diamonds, clubs, joker } from "../models/deck";
 
 import { Button, Flex, Heading } from "@chakra-ui/react";
 
@@ -21,26 +21,39 @@ export default function Game() {
     ctx.setWinner(target.name);
   };
 
+  const [random, setRandom] = useState(<Card suit={joker} card={"Joker"} />);
+
+  const randomCard = () => {
+    const suits = [hearts, spades, diamonds, clubs];
+    const randomSuit = Math.floor(Math.random() * suits.length);
+    const cards = [
+      "Two",
+      "Three",
+      "Four",
+      "Five",
+      "Six",
+      "Seven",
+      "Eight",
+      "Nine",
+      "Ten",
+      "Jack",
+      "Queen",
+      "King",
+      "Ace",
+    ];
+    const randomCard = Math.floor(Math.random() * cards.length);
+    setRandom(<Card suit={suits[randomSuit]} card={cards[randomCard]} />);
+  };
+
   return (
     <Flex align={"center"} flexDir={"column"} justify={"center"}>
       <Heading as={"h2"} size="xl" mb={10} textAlign={"center"}>
         Game
       </Heading>
       <Flex wrap="wrap" flexDir="row">
-        {Array.from(hearts).map((card) => {
-          return <Card suit={hearts} card={card[0]} />;
-        })}
-        {Array.from(spades).map((card) => {
-          return <Card suit={spades} card={card[0]} />;
-        })}
-        {Array.from(diamonds).map((card) => {
-          return <Card suit={diamonds} card={card[0]} />;
-        })}
-        {Array.from(clubs).map((card) => {
-          return <Card suit={clubs} card={card[0]} />;
-        })}
+        {random}
       </Flex>
-      <Button>Click</Button>
+      <Button onClick={randomCard}>Click</Button>
       <Flex justifyContent={"space-between"}>
         <Button
           onClick={clickHandler.bind(heartsRef)}

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 
-import { hearts, spades, diamonds, clubs } from "../models/deck";
+import { hearts, spades, diamonds, clubs, joker } from "../models/deck";
 
 export const Card = (props: {
-  suit: typeof hearts | typeof spades | typeof diamonds | typeof clubs;
+  suit: typeof hearts | typeof spades | typeof diamonds | typeof joker;
   card: string;
 }) => {
   const [color, setColor] = useState("red");

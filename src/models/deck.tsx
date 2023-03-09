@@ -58,3 +58,5 @@ export const clubs = new Map([
   ["King", "🃞"],
   ["Ace", "🃑"],
 ]);
+
+export const joker = new Map([["Joker", "🃟"]]);
