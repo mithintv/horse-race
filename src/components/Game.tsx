@@ -9,24 +9,26 @@ import {
   joker,
   Deck,
   CardNode,
+  clubDeck,
+  fillDeck,
 } from "../models/deck";
 
 import { Button, Flex, Heading } from "@chakra-ui/react";
 
-export const deckReducer = (state: Deck, action: { type: string }) => {
+export const deckReducer = (
+  state: typeof clubDeck,
+  action: { type: string }
+) => {
   if (action.type === "shuffle") {
-    const deck = new Deck();
-    deck.shuffle();
-    return deck;
+    const newDeck = fillDeck(clubs);
+    return newDeck;
   }
   if (action.type === "draw") {
-    console.log(state);
-    let newHead = { ...state };
-    const newDeck = new Deck(newHead.head!);
-    newDeck.draw();
-    console.log(newDeck);
-    return deck;
+    const newDeck = [...state];
+    newDeck.pop();
+    return newDeck;
   }
+  return state;
 };
 
 export default function Game() {
@@ -45,7 +47,7 @@ export default function Game() {
     ctx.setWinner(target.name);
   };
 
-  const [deck, dispatchDeck] = useReducer(deckReducer, new Deck().shuffle());
+  const [deck, dispatchDeck] = useReducer(deckReducer, clubDeck);
   const [random, setRandom] = useState(<Card suit="joker" display="🃟" />);
 
   useEffect(() => {
@@ -57,11 +59,13 @@ export default function Game() {
   }, [deck!.length]);
 
   const randomCard = () => {
-    if (deck!.head) {
-      setRandom(
-        <Card display={deck!.head.card.display} suit={deck!.head.card.suit} />
-      );
-    }
+    setRandom(
+      <Card
+        display={deck[deck.length - 1].display}
+        suit={deck[deck.length - 1].suit}
+      />
+    );
+    console.log(deck);
     dispatchDeck({
       type: "draw",
     });

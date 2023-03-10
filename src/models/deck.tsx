@@ -61,6 +61,20 @@ export const clubs = [
 
 export const joker = new Map([["Joker", "🃟"]]);
 
+export const fillDeck = (fullDeck: typeof clubs) => {
+  let deck = [];
+  while (fullDeck.length > 0) {
+    let index = Math.floor(Math.random() * fullDeck.length);
+    deck.push(fullDeck[index]);
+    fullDeck = fullDeck.filter(
+      (card) => card.display !== fullDeck[index].display
+    );
+  }
+  return deck;
+};
+
+export const clubDeck = fillDeck(clubs);
+
 export class CardNode {
   constructor(card: CardSingle) {
     this.card = card;
