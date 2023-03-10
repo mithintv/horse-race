@@ -1,9 +1,33 @@
-import { useState, useContext, useRef } from "react";
+import { useState, useReducer, useContext, useRef, useEffect } from "react";
 import AppContext from "../context/app-context";
 import { Card } from "./Card";
-import { hearts, spades, diamonds, clubs, joker } from "../models/deck";
+import {
+  hearts,
+  spades,
+  diamonds,
+  clubs,
+  joker,
+  Deck,
+  CardNode,
+} from "../models/deck";
 
 import { Button, Flex, Heading } from "@chakra-ui/react";
+
+export const deckReducer = (state: Deck, action: { type: string }) => {
+  if (action.type === "shuffle") {
+    const deck = new Deck();
+    deck.shuffle();
+    return deck;
+  }
+  if (action.type === "draw") {
+    console.log(state);
+    let newHead = { ...state };
+    const newDeck = new Deck(newHead.head!);
+    newDeck.draw();
+    console.log(newDeck);
+    return deck;
+  }
+};
 
 export default function Game() {
   const ctx = useContext(AppContext);
@@ -21,28 +45,26 @@ export default function Game() {
     ctx.setWinner(target.name);
   };
 
-  const [random, setRandom] = useState(<Card suit={joker} card={"Joker"} />);
+  const [deck, dispatchDeck] = useReducer(deckReducer, new Deck().shuffle());
+  const [random, setRandom] = useState(<Card suit="joker" display="🃟" />);
+
+  useEffect(() => {
+    if (deck!.length === 0) {
+      dispatchDeck({
+        type: "shuffle",
+      });
+    }
+  }, [deck!.length]);
 
   const randomCard = () => {
-    const suits = [hearts, spades, diamonds, clubs];
-    const randomSuit = Math.floor(Math.random() * suits.length);
-    const cards = [
-      "Two",
-      "Three",
-      "Four",
-      "Five",
-      "Six",
-      "Seven",
-      "Eight",
-      "Nine",
-      "Ten",
-      "Jack",
-      "Queen",
-      "King",
-      "Ace",
-    ];
-    const randomCard = Math.floor(Math.random() * cards.length);
-    setRandom(<Card suit={suits[randomSuit]} card={cards[randomCard]} />);
+    if (deck!.head) {
+      setRandom(
+        <Card display={deck!.head.card.display} suit={deck!.head.card.suit} />
+      );
+    }
+    dispatchDeck({
+      type: "draw",
+    });
   };
 
   return (

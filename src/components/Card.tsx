@@ -1,14 +1,11 @@
 import { useState, useEffect } from "react";
 
-import { hearts, spades, diamonds, clubs, joker } from "../models/deck";
+import { clubs } from "../models/deck";
 
-export const Card = (props: {
-  suit: typeof hearts | typeof spades | typeof diamonds | typeof joker;
-  card: string;
-}) => {
+export const Card = (props: { display: string; suit: string }) => {
   const [color, setColor] = useState("red");
   useEffect(() => {
-    if (props.suit === spades || props.suit === clubs) {
+    if (props.suit === "spades" || props.suit === "clubs") {
       setColor("black");
     } else setColor("red");
   }, [props.suit]);
@@ -21,7 +18,7 @@ export const Card = (props: {
         fontSize: "8rem",
       }}
     >
-      {props.suit.get(props.card)}
+      {props.display}
     </div>
   );
 };
