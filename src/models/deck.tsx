@@ -65,8 +65,11 @@ export const fullDeck = [...clubs, ...diamonds, ...spades, ...hearts];
 
 export const shuffleDeck = (fullDeck: suitDeck) => {
   let deck = [];
-  while (fullDeck.length > 0) {
+  while (fullDeck.length > 4) {
     let index = Math.floor(Math.random() * fullDeck.length);
+    while (fullDeck[index].name === "Ace") {
+      index = Math.floor(Math.random() * fullDeck.length);
+    }
     deck.push(fullDeck[index]);
     fullDeck = fullDeck.filter(
       (card) => card.display !== fullDeck[index].display
