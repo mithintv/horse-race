@@ -28,21 +28,21 @@ export const spades = new Map([
   ["King", "🂮"],
   ["Ace", "🂡"],
 ]);
-export const diamonds = new Map([
-  ["Two", "🃂"],
-  ["Three", "🃃"],
-  ["Four", "🂤"],
-  ["Five", "🃅"],
-  ["Six", "🃆"],
-  ["Seven", "🃇"],
-  ["Eight", "🃈"],
-  ["Nine", "🃉"],
-  ["Ten", "🃊"],
-  ["Jack", "🃋"],
-  ["Queen", "🃍"],
-  ["King", "🃎"],
-  ["Ace", "🃁"],
-]);
+export const diamonds = [
+  { name: "Two", display: "🃂", suit: "diamonds" },
+  { name: "Three", display: "🃃", suit: "diamonds" },
+  { name: "Four", display: "🂤", suit: "diamonds" },
+  { name: "Five", display: "🃅", suit: "diamonds" },
+  { name: "Six", display: "🃆", suit: "diamonds" },
+  { name: "Seven", display: "🃇", suit: "diamonds" },
+  { name: "Eight", display: "🃈", suit: "diamonds" },
+  { name: "Nine", display: "🃉", suit: "diamonds" },
+  { name: "Ten", display: "🃊", suit: "diamonds" },
+  { name: "Jack", display: "🃋", suit: "diamonds" },
+  { name: "Queen", display: "🃍", suit: "diamonds" },
+  { name: "King", display: "🃎", suit: "diamonds" },
+  { name: "Ace", display: "🃁", suit: "diamonds" },
+];
 export const clubs = [
   { name: "Two", display: "🃒", suit: "clubs" },
   { name: "Three", display: "🃓", suit: "clubs" },
@@ -61,7 +61,7 @@ export const clubs = [
 
 export const joker = new Map([["Joker", "🃟"]]);
 
-export const fillDeck = (fullDeck: typeof clubs) => {
+export const fillDeck = (fullDeck: suitDeck) => {
   let deck = [];
   while (fullDeck.length > 0) {
     let index = Math.floor(Math.random() * fullDeck.length);
@@ -73,77 +73,10 @@ export const fillDeck = (fullDeck: typeof clubs) => {
   return deck;
 };
 
-export const clubDeck = fillDeck(clubs);
+export const clubDeck = fillDeck([...clubs, ...diamonds]);
 
-export class CardNode {
-  constructor(card: CardSingle) {
-    this.card = card;
-    this.next = null;
-  }
-}
-
-export class Deck {
-  constructor(deck?: CardNode) {
-    this.head = null;
-    this.length = 0;
-
-    if (deck) {
-      this.head = deck;
-      let current = deck;
-      while (current.next !== null) {
-        this.length++;
-        current = current.next;
-      }
-    }
-  }
-
-  shuffle() {
-    let wholeDeck = [...clubs];
-    while (wholeDeck.length > 0) {
-      let randomIndex = Math.floor(Math.random() * wholeDeck.length);
-      this.push(wholeDeck[randomIndex]);
-      wholeDeck = wholeDeck.filter(
-        (card) => card.display !== wholeDeck[randomIndex].display
-      );
-    }
-    return this;
-  }
-
-  push(card: CardSingle) {
-    const cardNode = new CardNode(card);
-    this.head ? (this.tail!.next = cardNode) : (this.head = cardNode);
-    this.tail = cardNode;
-    this.length++;
-    return this;
-  }
-
-  draw() {
-    if (!this.head) return null;
-    const currHead = this.head;
-    this.head = currHead.next;
-    currHead.next = null;
-    this.length--;
-    if (this.length === 0) this.tail = null;
-    return currHead;
-  }
-}
-
-export interface Deck {
-  head: null | CardNode;
-  tail: null | CardNode;
-  length: number;
-}
-
-export interface CardNode {
-  card: CardSingle;
-  next: null | CardNode;
-}
-
-export interface CardSingle {
+type suitDeck = {
   name: string;
   display: string;
   suit: string;
-}
-
-const deck = new Deck();
-console.log(deck);
+}[];
