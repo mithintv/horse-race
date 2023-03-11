@@ -1,37 +1,37 @@
-export const hearts = new Map([
-  ["Two", "🂲"],
-  ["Three", "🂳"],
-  ["Four", "🂴"],
-  ["Five", "🂵"],
-  ["Six", "🂶"],
-  ["Seven", "🂷"],
-  ["Eight", "🂸"],
-  ["Nine", "🂹"],
-  ["Ten", "🂺"],
-  ["Jack", "🂻"],
-  ["Queen", "🂽"],
-  ["King", "🂾"],
-  ["Ace", "🂱"],
-]);
-export const spades = new Map([
-  ["Two", "🂢"],
-  ["Three", "🂣"],
-  ["Four", "🂤"],
-  ["Five", "🂥"],
-  ["Six", "🂦"],
-  ["Seven", "🂧"],
-  ["Eight", "🂨"],
-  ["Nine", "🂩"],
-  ["Ten", "🂪"],
-  ["Jack", "🂫"],
-  ["Queen", "🂭"],
-  ["King", "🂮"],
-  ["Ace", "🂡"],
-]);
+export const hearts = [
+  { name: "Two", display: "🂲", suit: "hearts" },
+  { name: "Three", display: "🂳", suit: "hearts" },
+  { name: "Four", display: "🂴", suit: "hearts" },
+  { name: "Five", display: "🂵", suit: "hearts" },
+  { name: "Six", display: "🂶", suit: "hearts" },
+  { name: "Seven", display: "🂷", suit: "hearts" },
+  { name: "Eight", display: "🂸", suit: "hearts" },
+  { name: "Nine", display: "🂹", suit: "hearts" },
+  { name: "Ten", display: "🂺", suit: "hearts" },
+  { name: "Jack", display: "🂻", suit: "hearts" },
+  { name: "Queen", display: "🂽", suit: "hearts" },
+  { name: "King", display: "🂾", suit: "hearts" },
+  { name: "Ace", display: "🂱", suit: "hearts" },
+];
+export const spades = [
+  { name: "Two", display: "🂢", suit: "spades" },
+  { name: "Three", display: "🂣", suit: "spades" },
+  { name: "Four", display: "🂤", suit: "spades" },
+  { name: "Five", display: "🂥", suit: "spades" },
+  { name: "Six", display: "🂦", suit: "spades" },
+  { name: "Seven", display: "🂧", suit: "spades" },
+  { name: "Eight", display: "🂨", suit: "spades" },
+  { name: "Nine", display: "🂩", suit: "spades" },
+  { name: "Ten", display: "🂪", suit: "spades" },
+  { name: "Jack", display: "🂫", suit: "spades" },
+  { name: "Queen", display: "🂭", suit: "spades" },
+  { name: "King", display: "🂮", suit: "spades" },
+  { name: "Ace", display: "🂡", suit: "spades" },
+];
 export const diamonds = [
   { name: "Two", display: "🃂", suit: "diamonds" },
   { name: "Three", display: "🃃", suit: "diamonds" },
-  { name: "Four", display: "🂤", suit: "diamonds" },
+  { name: "Four", display: "🃄", suit: "diamonds" },
   { name: "Five", display: "🃅", suit: "diamonds" },
   { name: "Six", display: "🃆", suit: "diamonds" },
   { name: "Seven", display: "🃇", suit: "diamonds" },
@@ -59,9 +59,11 @@ export const clubs = [
   { name: "Ace", display: "🃑", suit: "clubs" },
 ];
 
-export const joker = new Map([["Joker", "🃟"]]);
+export const joker = { name: "Joker", display: "🃟", suit: "joker" };
 
-export const fillDeck = (fullDeck: suitDeck) => {
+export const fullDeck = [...clubs, ...diamonds, ...spades, ...hearts];
+
+export const shuffleDeck = (fullDeck: suitDeck) => {
   let deck = [];
   while (fullDeck.length > 0) {
     let index = Math.floor(Math.random() * fullDeck.length);
@@ -73,7 +75,7 @@ export const fillDeck = (fullDeck: suitDeck) => {
   return deck;
 };
 
-export const clubDeck = fillDeck([...clubs, ...diamonds]);
+export const shuffledDeck = shuffleDeck(fullDeck);
 
 type suitDeck = {
   name: string;

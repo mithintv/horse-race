@@ -1,26 +1,16 @@
 import { useState, useReducer, useContext, useRef, useEffect } from "react";
 import AppContext from "../context/app-context";
 import { Card } from "./Card";
-import {
-  hearts,
-  spades,
-  diamonds,
-  clubs,
-  joker,
-  Deck,
-  CardNode,
-  clubDeck,
-  fillDeck,
-} from "../models/deck";
+import { fullDeck, shuffleDeck, shuffledDeck } from "../models/deck";
 
 import { Button, Flex, Heading } from "@chakra-ui/react";
 
 export const deckReducer = (
-  state: typeof clubDeck,
+  state: typeof shuffledDeck,
   action: { type: string }
 ) => {
   if (action.type === "shuffle") {
-    const newDeck = fillDeck(clubs);
+    const newDeck = shuffleDeck(fullDeck);
     return newDeck;
   }
   if (action.type === "draw") {
@@ -47,7 +37,7 @@ export default function Game() {
     ctx.setWinner(target.name);
   };
 
-  const [deck, dispatchDeck] = useReducer(deckReducer, clubDeck);
+  const [deck, dispatchDeck] = useReducer(deckReducer, shuffledDeck);
   const [random, setRandom] = useState(<Card suit="joker" display="🃟" />);
 
   useEffect(() => {
@@ -59,13 +49,13 @@ export default function Game() {
   }, [deck!.length]);
 
   const randomCard = () => {
+    console.log(deck);
     setRandom(
       <Card
         display={deck[deck.length - 1].display}
         suit={deck[deck.length - 1].suit}
       />
     );
-    console.log(deck);
     dispatchDeck({
       type: "draw",
     });
