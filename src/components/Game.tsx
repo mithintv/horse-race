@@ -13,6 +13,7 @@ import {
 } from "../models/deck";
 
 import { Button, Flex, GridItem, Heading } from "@chakra-ui/react";
+import { icons } from "../models/default";
 
 export const deckReducer = (
   state: typeof shuffledDeck,
@@ -87,8 +88,26 @@ export default function Game() {
     }
   }, [playCard]);
 
+  useEffect(() => {
+    if (heartsHorse === "500px") {
+      ctx.setMode("END_GAME");
+      ctx.setWinner("hearts");
+    }
+    if (spadesHorse === "500px") {
+      ctx.setMode("END_GAME");
+      ctx.setWinner("spades");
+    }
+    if (diamondsHorse === "500px") {
+      ctx.setMode("END_GAME");
+      ctx.setWinner("diamonds");
+    }
+    if (clubsHorse === "500px") {
+      ctx.setMode("END_GAME");
+      ctx.setWinner("clubs");
+    }
+  }, [heartsHorse, spadesHorse, diamondsHorse, clubsHorse]);
+
   const randomCard = () => {
-    console.log(deck);
     setPlayCard(
       <Card
         display={deck[deck.length - 1].display}
@@ -100,10 +119,17 @@ export default function Game() {
     });
   };
 
+  const viewResults = () => {
+    ctx.setMode("VIEW_RESULTS");
+  };
+
   return (
     <Flex align={"center"} flexDir={"column"} justify={"center"}>
       <Heading as={"h2"} size="xl" mb={10} textAlign={"center"}>
-        Game
+        {ctx.game.winner &&
+          icons.find((icon) => icon.type === ctx.game.winner)!.icon}
+        {ctx.game.winner && "Wins"}
+        {!ctx.game.winner && "Game"}
       </Heading>
       <Flex
         wrap="wrap"
@@ -144,14 +170,15 @@ export default function Game() {
       <Flex wrap="wrap" flexDir="row">
         {playCard}
       </Flex>
-      <Button onClick={randomCard}>Click</Button>
+      {!ctx.game.winner && <Button onClick={randomCard}>Click</Button>}
+      {ctx.game.winner && <Button onClick={viewResults}>Results</Button>}
       <Flex justifyContent={"space-between"}>
         <Button
           onClick={clickHandler.bind(heartsRef)}
           ref={heartsRef}
           name="hearts"
           type="submit"
-          width={"24%"}
+          width={"22%"}
           mt={3}
         >
           Hearts
@@ -171,7 +198,7 @@ export default function Game() {
           ref={diamondsRef}
           name="diamonds"
           type="submit"
-          width={"24%"}
+          width={"28%"}
           mt={3}
         >
           Diamonds

@@ -23,7 +23,7 @@ export default function Parameters() {
     const enteredRows = totalRowsRef.current
       ? totalRowsRef.current.value
       : null;
-    ctx?.addRow(enteredRows);
+    ctx.addRow(enteredRows);
   };
 
   // function to keep track of input value for total number of players
@@ -31,17 +31,17 @@ export default function Parameters() {
     const enteredPlayers = totalPlayersRef.current
       ? totalPlayersRef.current.value
       : null;
-    ctx?.addPlayer(enteredPlayers);
+    ctx.addPlayer(enteredPlayers);
   };
 
   // submission handler
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    ctx?.setMode("PLAY_GAME");
+    ctx.setMode("PLAY_GAME");
   };
 
   const stateHandler = () => {
-    ctx?.setMode("PLAY_GAME");
+    ctx.setMode("PLAY_GAME");
   };
 
   return (

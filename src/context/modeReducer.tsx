@@ -26,6 +26,12 @@ export default function modeReducer(
     case "END_GAME":
       return {
         parameters: false,
+        game: true,
+        summary: false,
+      };
+    case "VIEW_RESULTS":
+      return {
+        parameters: false,
         game: false,
         summary: true,
       };

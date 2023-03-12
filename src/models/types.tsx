@@ -53,14 +53,17 @@ export interface ContextInt {
   ) => void;
 
   setWinner: (winningSuit: string) => void;
-  setMode: (type: "RESET_GAME" | "PLAY_GAME" | "END_GAME") => void;
+  setMode: (
+    type: "RESET_GAME" | "PLAY_GAME" | "END_GAME" | "VIEW_RESULTS"
+  ) => void;
 }
 
 // reducer types
 export type ModeActionType =
   | { type: "RESET_GAME" }
   | { type: "PLAY_GAME" }
-  | { type: "END_GAME" };
+  | { type: "END_GAME" }
+  | { type: "VIEW_RESULTS" };
 
 export type PlayersBetsActionType =
   | { type: "UPDATE_PLAYERS"; payload: EmptyInput }
@@ -89,8 +92,8 @@ export type PlayersBetsActionType =
     };
 
 export type GameActionType = {
-  type: "SET_WINNER";
-  payload: {
+  type: "SET_WINNER" | "NEW_GAME";
+  payload?: {
     winner: ContextInt["game"]["winner"];
   };
 };
