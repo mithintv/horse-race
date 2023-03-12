@@ -64,6 +64,7 @@ export default function Game() {
   }, [deck!.length]);
 
   useEffect(() => {
+    console.log(playCard.props.suit);
     if (playCard.props.suit === "clubs") {
       setClubsHorse((prevState) => {
         return (parseInt(prevState) + 100).toString() + "px";
@@ -84,7 +85,7 @@ export default function Game() {
         return (parseInt(prevState) + 100).toString() + "px";
       });
     }
-  }, [playCard.props.suit]);
+  }, [playCard]);
 
   const randomCard = () => {
     console.log(deck);
