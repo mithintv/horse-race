@@ -10,6 +10,8 @@ import {
   fullDeck,
   shuffleDeck,
   shuffledDeck,
+  back,
+  rungs,
 } from "../models/deck";
 
 import { Button, Flex, GridItem, Heading } from "@chakra-ui/react";
@@ -20,7 +22,7 @@ export const deckReducer = (
   action: { type: string }
 ) => {
   if (action.type === "shuffle") {
-    const newDeck = shuffleDeck(fullDeck);
+    const { deck: newDeck } = shuffleDeck(fullDeck);
     return newDeck;
   }
   if (action.type === "draw") {
@@ -89,19 +91,19 @@ export default function Game() {
   }, [playCard]);
 
   useEffect(() => {
-    if (heartsHorse === "500px") {
+    if (heartsHorse === "600px") {
       ctx.setMode("END_GAME");
       ctx.setWinner("hearts");
     }
-    if (spadesHorse === "500px") {
+    if (spadesHorse === "600px") {
       ctx.setMode("END_GAME");
       ctx.setWinner("spades");
     }
-    if (diamondsHorse === "500px") {
+    if (diamondsHorse === "600px") {
       ctx.setMode("END_GAME");
       ctx.setWinner("diamonds");
     }
-    if (clubsHorse === "500px") {
+    if (clubsHorse === "600px") {
       ctx.setMode("END_GAME");
       ctx.setWinner("clubs");
     }
@@ -131,6 +133,15 @@ export default function Game() {
         {ctx.game.winner && "Wins"}
         {!ctx.game.winner && "Game"}
       </Heading>
+      <Flex width="100%" marginLeft="200px" gridGap={"10px"}>
+        {rungs.map((card) => {
+          return (
+            <GridItem>
+              <Card display={back.display} suit={back.suit} />
+            </GridItem>
+          );
+        })}
+      </Flex>
       <Flex
         wrap="wrap"
         width="100%"
