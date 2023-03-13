@@ -18,6 +18,7 @@ import { Button, Flex, GridItem, Heading } from "@chakra-ui/react";
 import { icons } from "../models/default";
 import { moveBackward, moveForward } from "../utils/moveHorse";
 
+
 export const deckReducer = (
   state: typeof shuffledDeck,
   action: { type: string }
