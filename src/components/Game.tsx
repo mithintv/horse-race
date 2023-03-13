@@ -71,6 +71,9 @@ export default function Game() {
   const [showRung4, setShowRung4] = useState(false);
   const [showRung5, setShowRung5] = useState(false);
 
+  const [timeoutId, setTimeoutId] = useState();
+
+  // shuffle deck if ran out of cards
   useEffect(() => {
     if (deck!.length === 0) {
       dispatchDeck({
@@ -79,6 +82,7 @@ export default function Game() {
     }
   }, [deck!.length]);
 
+  // move horses forward based on card drawn
   useEffect(() => {
     if (playCard.props.suit === "clubs") {
       setclubsHorse((prevState) => {
@@ -102,22 +106,27 @@ export default function Game() {
     }
   }, [playCard]);
 
+  // set winner when a horse reaches threshold
   useEffect(() => {
     if (heartsHorse === "600px") {
       ctx.setMode("END_GAME");
       ctx.setWinner("hearts");
+      clearTimeout(timeoutId);
     }
     if (spadesHorse === "600px") {
       ctx.setMode("END_GAME");
       ctx.setWinner("spades");
+      clearTimeout(timeoutId);
     }
     if (diamondsHorse === "600px") {
       ctx.setMode("END_GAME");
       ctx.setWinner("diamonds");
+      clearTimeout(timeoutId);
     }
     if (clubsHorse === "600px") {
       ctx.setMode("END_GAME");
       ctx.setWinner("clubs");
+      clearTimeout(timeoutId);
     }
   }, [heartsHorse, spadesHorse, diamondsHorse, clubsHorse]);
 
@@ -190,6 +199,23 @@ export default function Game() {
     }
   }, [heartsHorse, spadesHorse, diamondsHorse, clubsHorse]);
 
+  // Drawing card behaviour
+  useEffect(() => {
+    if (!ctx.game.winner) {
+      let timeoutId: any = setTimeout(() => {
+        setPlayCard(
+          <Card
+            display={deck[deck.length - 1].display}
+            suit={deck[deck.length - 1].suit}
+          />
+        );
+        dispatchDeck({
+          type: "draw",
+        });
+      }, 3000);
+      setTimeoutId(timeoutId);
+    }
+  }, [deck]);
   const randomCard = () => {
     setPlayCard(
       <Card
@@ -269,9 +295,8 @@ export default function Game() {
       <Flex wrap="wrap" flexDir="row">
         {playCard}
       </Flex>
-      {/* {!ctx.game.winner && <Button onClick={randomCard}>Click</Button>}
-      {ctx.game.winner && <Button onClick={viewResults}>Results</Button>} */}
-      <Button onClick={randomCard}>Click</Button>
+      {!ctx.game.winner && <Button onClick={randomCard}>Click</Button>}
+      {ctx.game.winner && <Button onClick={viewResults}>Results</Button>}
       <Flex justifyContent={"space-between"}>
         <Button
           onClick={clickHandler.bind(heartsRef)}
