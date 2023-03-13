@@ -18,7 +18,6 @@ import { Button, Flex, GridItem, Heading } from "@chakra-ui/react";
 import { icons } from "../models/default";
 import { moveBackward, moveForward } from "../utils/moveHorse";
 
-
 export const deckReducer = (
   state: typeof shuffledDeck,
   action: { type: string }
@@ -81,7 +80,7 @@ export default function Game() {
         type: "shuffle",
       });
     }
-  }, [deck!.length]);
+  }, [deck]);
 
   // move horses forward based on card drawn
   useEffect(() => {
@@ -129,7 +128,7 @@ export default function Game() {
       ctx.setWinner("clubs");
       clearTimeout(timeoutId);
     }
-  }, [heartsHorse, spadesHorse, diamondsHorse, clubsHorse]);
+  }, [ctx, timeoutId, heartsHorse, spadesHorse, diamondsHorse, clubsHorse]);
 
   // Rung behavior
   useEffect(() => {
@@ -198,7 +197,17 @@ export default function Game() {
       });
       setShowRung5(true);
     }
-  }, [heartsHorse, spadesHorse, diamondsHorse, clubsHorse]);
+  }, [
+    showRung1,
+    showRung2,
+    showRung3,
+    showRung4,
+    showRung5,
+    heartsHorse,
+    spadesHorse,
+    diamondsHorse,
+    clubsHorse,
+  ]);
 
   // Drawing card behaviour
   useEffect(() => {
@@ -216,7 +225,8 @@ export default function Game() {
       }, 3000);
       setTimeoutId(timeoutId);
     }
-  }, [deck]);
+  }, [deck, ctx.game.winner]);
+
   const randomCard = () => {
     setPlayCard(
       <Card

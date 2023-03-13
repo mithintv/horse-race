@@ -83,9 +83,9 @@ export default function Summary() {
                 </Tr>
               </Thead>
               <Tbody>
-                {winners.map((winner) => {
+                {winners.map((winner, index) => {
                   return (
-                    <Tr>
+                    <Tr key={index}>
                       <Td textAlign={"center"}>{winner.name}</Td>
                       <Td textAlign={"center"}>
                         {winner.suits[type!.type].bets}
@@ -118,9 +118,9 @@ export default function Summary() {
                 </Tr>
               </Thead>
               <Tbody>
-                {suitOne.map((suit) => {
+                {suitOne.map((suit, index) => {
                   return (
-                    <Tr>
+                    <Tr key={index}>
                       <Td textAlign={"center"}>{suit.name}</Td>
                       <Td textAlign={"center"}>
                         {suit.suits[losingSuits[0].type].bets}
@@ -129,9 +129,9 @@ export default function Summary() {
                   );
                 })}
 
-                {suitTwo.map((suit) => {
+                {suitTwo.map((suit, index) => {
                   return (
-                    <Tr>
+                    <Tr key={index}>
                       <Td textAlign={"center"}>{suit.name}</Td>
                       <Td textAlign={"center"}>
                         {suit.suits[losingSuits[1].type].bets}
@@ -140,9 +140,9 @@ export default function Summary() {
                   );
                 })}
 
-                {suitThree.map((suit) => {
+                {suitThree.map((suit, index) => {
                   return (
-                    <Tr>
+                    <Tr key={index}>
                       <Td textAlign={"center"}>{suit.name}</Td>
                       <Td textAlign={"center"}>
                         {suit.suits[losingSuits[2].type].bets}
