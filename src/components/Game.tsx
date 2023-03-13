@@ -58,6 +58,12 @@ export default function Game() {
   const [diamondsHorse, setDiamondsHorse] = useState("0");
   const [clubsHorse, setClubsHorse] = useState("0");
 
+  const [rung1, setRung1] = useState(back.display);
+  const [rung2, setRung2] = useState(back.display);
+  const [rung3, setRung3] = useState(back.display);
+  const [rung4, setRung4] = useState(back.display);
+  const [rung5, setRung5] = useState(back.display);
+
   useEffect(() => {
     if (deck!.length === 0) {
       dispatchDeck({
@@ -67,7 +73,6 @@ export default function Game() {
   }, [deck!.length]);
 
   useEffect(() => {
-    console.log(playCard.props.suit);
     if (playCard.props.suit === "clubs") {
       setClubsHorse((prevState) => {
         return (parseInt(prevState) + 100).toString() + "px";
@@ -109,6 +114,49 @@ export default function Game() {
     }
   }, [heartsHorse, spadesHorse, diamondsHorse, clubsHorse]);
 
+  useEffect(() => {
+    if (
+      heartsHorse >= "200px" &&
+      spadesHorse >= "200px" &&
+      diamondsHorse >= "200px" &&
+      clubsHorse >= "200px"
+    ) {
+      setRung2(rungs[1].display);
+    }
+    if (
+      heartsHorse >= "300px" &&
+      spadesHorse >= "300px" &&
+      diamondsHorse >= "300px" &&
+      clubsHorse >= "300px"
+    ) {
+      setRung3(rungs[2].display);
+    }
+    if (
+      heartsHorse >= "400px" &&
+      spadesHorse >= "400px" &&
+      diamondsHorse >= "400px" &&
+      clubsHorse >= "400px"
+    ) {
+      setRung4(rungs[3].display);
+    }
+    if (
+      heartsHorse >= "500px" &&
+      spadesHorse >= "500px" &&
+      diamondsHorse >= "500px" &&
+      clubsHorse >= "500px"
+    ) {
+      setRung5(rungs[4].display);
+    }
+    if (
+      heartsHorse >= "100px" &&
+      spadesHorse >= "100px" &&
+      diamondsHorse >= "100px" &&
+      clubsHorse >= "100px"
+    ) {
+      setRung1(rungs[0].display);
+    }
+  });
+
   const randomCard = () => {
     setPlayCard(
       <Card
@@ -134,10 +182,10 @@ export default function Game() {
         {!ctx.game.winner && "Game"}
       </Heading>
       <Flex width="100%" marginLeft="200px" gridGap={"10px"}>
-        {rungs.map((card) => {
+        {rungs.map((card, index) => {
           return (
-            <GridItem>
-              <Card display={back.display} suit={back.suit} />
+            <GridItem key={index}>
+              <Card display={eval("rung" + `${index + 1}`)} suit={back.suit} />
             </GridItem>
           );
         })}
@@ -181,8 +229,9 @@ export default function Game() {
       <Flex wrap="wrap" flexDir="row">
         {playCard}
       </Flex>
-      {!ctx.game.winner && <Button onClick={randomCard}>Click</Button>}
-      {ctx.game.winner && <Button onClick={viewResults}>Results</Button>}
+      {/* {!ctx.game.winner && <Button onClick={randomCard}>Click</Button>}
+      {ctx.game.winner && <Button onClick={viewResults}>Results</Button>} */}
+      <Button onClick={randomCard}>Click</Button>
       <Flex justifyContent={"space-between"}>
         <Button
           onClick={clickHandler.bind(heartsRef)}
