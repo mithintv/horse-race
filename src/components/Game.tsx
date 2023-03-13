@@ -10,16 +10,21 @@ import {
   fullDeck,
   shuffleDeck,
   shuffledDeck,
+  back,
+  rungs,
 } from "../models/deck";
 
 import { Button, Flex, GridItem, Heading } from "@chakra-ui/react";
+import { icons } from "../models/default";
+import { moveBackward, moveForward } from "../utils/moveHorse";
+
 
 export const deckReducer = (
   state: typeof shuffledDeck,
   action: { type: string }
 ) => {
   if (action.type === "shuffle") {
-    const newDeck = shuffleDeck(fullDeck);
+    const { deck: newDeck } = shuffleDeck(fullDeck);
     return newDeck;
   }
   if (action.type === "draw") {
@@ -50,11 +55,26 @@ export default function Game() {
   const [playCard, setPlayCard] = useState(
     <Card suit={joker.suit} display={joker.display} />
   );
-  const [spadesHorse, setSpadesHorse] = useState("0");
-  const [heartsHorse, setHeartsHorse] = useState("0");
-  const [diamondsHorse, setDiamondsHorse] = useState("0");
-  const [clubsHorse, setClubsHorse] = useState("0");
+  const [spadesHorse, setspadesHorse] = useState("0px");
+  const [heartsHorse, setheartsHorse] = useState("0px");
+  const [diamondsHorse, setdiamondsHorse] = useState("0px");
+  const [clubsHorse, setclubsHorse] = useState("0px");
 
+  const [rung1, setRung1] = useState(back.display);
+  const [rung2, setRung2] = useState(back.display);
+  const [rung3, setRung3] = useState(back.display);
+  const [rung4, setRung4] = useState(back.display);
+  const [rung5, setRung5] = useState(back.display);
+
+  const [showRung1, setShowRung1] = useState(false);
+  const [showRung2, setShowRung2] = useState(false);
+  const [showRung3, setShowRung3] = useState(false);
+  const [showRung4, setShowRung4] = useState(false);
+  const [showRung5, setShowRung5] = useState(false);
+
+  const [timeoutId, setTimeoutId] = useState();
+
+  // shuffle deck if ran out of cards
   useEffect(() => {
     if (deck!.length === 0) {
       dispatchDeck({
@@ -63,32 +83,141 @@ export default function Game() {
     }
   }, [deck!.length]);
 
+  // move horses forward based on card drawn
   useEffect(() => {
-    console.log(playCard.props.suit);
     if (playCard.props.suit === "clubs") {
-      setClubsHorse((prevState) => {
-        return (parseInt(prevState) + 100).toString() + "px";
+      setclubsHorse((prevState) => {
+        return moveForward(prevState);
       });
     }
     if (playCard.props.suit === "diamonds") {
-      setDiamondsHorse((prevState) => {
-        return (parseInt(prevState) + 100).toString() + "px";
+      setdiamondsHorse((prevState) => {
+        return moveForward(prevState);
       });
     }
     if (playCard.props.suit === "hearts") {
-      setHeartsHorse((prevState) => {
-        return (parseInt(prevState) + 100).toString() + "px";
+      setheartsHorse((prevState) => {
+        return moveForward(prevState);
       });
     }
     if (playCard.props.suit === "spades") {
-      setSpadesHorse((prevState) => {
-        return (parseInt(prevState) + 100).toString() + "px";
+      setspadesHorse((prevState) => {
+        return moveForward(prevState);
       });
     }
   }, [playCard]);
 
+  // set winner when a horse reaches threshold
+  useEffect(() => {
+    if (heartsHorse === "600px") {
+      ctx.setMode("END_GAME");
+      ctx.setWinner("hearts");
+      clearTimeout(timeoutId);
+    }
+    if (spadesHorse === "600px") {
+      ctx.setMode("END_GAME");
+      ctx.setWinner("spades");
+      clearTimeout(timeoutId);
+    }
+    if (diamondsHorse === "600px") {
+      ctx.setMode("END_GAME");
+      ctx.setWinner("diamonds");
+      clearTimeout(timeoutId);
+    }
+    if (clubsHorse === "600px") {
+      ctx.setMode("END_GAME");
+      ctx.setWinner("clubs");
+      clearTimeout(timeoutId);
+    }
+  }, [heartsHorse, spadesHorse, diamondsHorse, clubsHorse]);
+
+  // Rung behavior
+  useEffect(() => {
+    if (
+      heartsHorse >= "100px" &&
+      spadesHorse >= "100px" &&
+      diamondsHorse >= "100px" &&
+      clubsHorse >= "100px" &&
+      !showRung1
+    ) {
+      setRung1(rungs[0].display);
+      eval("set" + rungs[0].suit + "Horse")((prevState: string) => {
+        return moveBackward(prevState);
+      });
+      setShowRung1(true);
+    }
+    if (
+      heartsHorse >= "200px" &&
+      spadesHorse >= "200px" &&
+      diamondsHorse >= "200px" &&
+      clubsHorse >= "200px" &&
+      !showRung2
+    ) {
+      setRung2(rungs[1].display);
+      eval("set" + rungs[1].suit + "Horse")((prevState: string) => {
+        return moveBackward(prevState);
+      });
+      setShowRung2(true);
+    }
+    if (
+      heartsHorse >= "300px" &&
+      spadesHorse >= "300px" &&
+      diamondsHorse >= "300px" &&
+      clubsHorse >= "300px" &&
+      !showRung3
+    ) {
+      setRung3(rungs[2].display);
+      eval("set" + rungs[2].suit + "Horse")((prevState: string) => {
+        return moveBackward(prevState);
+      });
+      setShowRung3(true);
+    }
+    if (
+      heartsHorse >= "400px" &&
+      spadesHorse >= "400px" &&
+      diamondsHorse >= "400px" &&
+      clubsHorse >= "400px" &&
+      !showRung4
+    ) {
+      setRung4(rungs[3].display);
+      eval("set" + rungs[3].suit + "Horse")((prevState: string) => {
+        return moveBackward(prevState);
+      });
+      setShowRung4(true);
+    }
+    if (
+      heartsHorse >= "500px" &&
+      spadesHorse >= "500px" &&
+      diamondsHorse >= "500px" &&
+      clubsHorse >= "500px" &&
+      !showRung5
+    ) {
+      setRung5(rungs[4].display);
+      eval("set" + rungs[4].suit + "Horse")((prevState: string) => {
+        return moveBackward(prevState);
+      });
+      setShowRung5(true);
+    }
+  }, [heartsHorse, spadesHorse, diamondsHorse, clubsHorse]);
+
+  // Drawing card behaviour
+  useEffect(() => {
+    if (!ctx.game.winner) {
+      let timeoutId: any = setTimeout(() => {
+        setPlayCard(
+          <Card
+            display={deck[deck.length - 1].display}
+            suit={deck[deck.length - 1].suit}
+          />
+        );
+        dispatchDeck({
+          type: "draw",
+        });
+      }, 3000);
+      setTimeoutId(timeoutId);
+    }
+  }, [deck]);
   const randomCard = () => {
-    console.log(deck);
     setPlayCard(
       <Card
         display={deck[deck.length - 1].display}
@@ -100,11 +229,34 @@ export default function Game() {
     });
   };
 
+  const viewResults = () => {
+    ctx.setMode("VIEW_RESULTS");
+  };
+
   return (
     <Flex align={"center"} flexDir={"column"} justify={"center"}>
       <Heading as={"h2"} size="xl" mb={10} textAlign={"center"}>
-        Game
+        {ctx.game.winner &&
+          icons.find((icon) => icon.type === ctx.game.winner)!.icon}
+        {ctx.game.winner && "Wins"}
+        {!ctx.game.winner && "Game"}
       </Heading>
+      <Flex width="100%" marginLeft="200px" gridGap={"10px"}>
+        {rungs.map((card, index) => {
+          return (
+            <GridItem key={index}>
+              <Card
+                display={eval("rung" + `${index + 1}`)}
+                suit={
+                  eval("rung" + `${index + 1}`) !== back.display
+                    ? card.suit
+                    : back.suit
+                }
+              />
+            </GridItem>
+          );
+        })}
+      </Flex>
       <Flex
         wrap="wrap"
         width="100%"
@@ -144,14 +296,15 @@ export default function Game() {
       <Flex wrap="wrap" flexDir="row">
         {playCard}
       </Flex>
-      <Button onClick={randomCard}>Click</Button>
+      {!ctx.game.winner && <Button onClick={randomCard}>Click</Button>}
+      {ctx.game.winner && <Button onClick={viewResults}>Results</Button>}
       <Flex justifyContent={"space-between"}>
         <Button
           onClick={clickHandler.bind(heartsRef)}
           ref={heartsRef}
           name="hearts"
           type="submit"
-          width={"24%"}
+          width={"22%"}
           mt={3}
         >
           Hearts
@@ -171,7 +324,7 @@ export default function Game() {
           ref={diamondsRef}
           name="diamonds"
           type="submit"
-          width={"24%"}
+          width={"28%"}
           mt={3}
         >
           Diamonds

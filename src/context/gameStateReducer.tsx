@@ -12,7 +12,12 @@ export default function gameStateReducer(
   let newState = { ...state };
   switch (action.type) {
     case "SET_WINNER":
-      newState.winner = action.payload.winner;
+      newState.winner = action.payload!.winner;
       return newState;
+    case "NEW_GAME":
+      return {
+        ...newState,
+        winner: null,
+      };
   }
 }

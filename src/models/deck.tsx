@@ -59,12 +59,23 @@ export const clubs = [
   { name: "Ace", display: "🃑", suit: "clubs" },
 ];
 
-export const joker = { name: "Joker", display: "🃟", suit: "joker" };
+export const joker = {
+  name: "Joker",
+  display: "🃟",
+  suit: "joker",
+};
+
+export const back = {
+  name: "Back",
+  display: "🂠",
+  suit: "none",
+};
 
 export const fullDeck = [...clubs, ...diamonds, ...spades, ...hearts];
 
 export const shuffleDeck = (fullDeck: suitDeck) => {
-  let deck = [];
+  let deck: typeof back[] = [];
+  let rungs = [];
   while (fullDeck.length > 4) {
     let index = Math.floor(Math.random() * fullDeck.length);
     while (fullDeck[index].name === "Ace") {
@@ -75,10 +86,15 @@ export const shuffleDeck = (fullDeck: suitDeck) => {
       (card) => card.display !== fullDeck[index].display
     );
   }
-  return deck;
+  for (let i = 0; i < 5; i++) {
+    let random = Math.floor(Math.random() * (48 - i));
+    rungs.push(deck[random]);
+    deck = deck.filter((card) => card !== deck[random]);
+  }
+  return { deck, rungs };
 };
 
-export const shuffledDeck = shuffleDeck(fullDeck);
+export const { deck: shuffledDeck, rungs } = shuffleDeck(fullDeck);
 
 type suitDeck = {
   name: string;

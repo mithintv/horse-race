@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 
-import { clubs } from "../models/deck";
-
 export const Card = (props: { display: string; suit: string }) => {
   const [color, setColor] = useState("red");
   useEffect(() => {
-    if (props.suit === "spades" || props.suit === "clubs") {
+    if (props.suit === "none") setColor("black");
+    else if (props.suit === "spades" || props.suit === "clubs") {
       setColor("black");
     } else setColor("red");
   }, [props.suit]);
