@@ -12,9 +12,11 @@ export default function Home() {
 
   return (
     <>
-      <Heading as={"h1"} size="3xl" p={20} textAlign={"center"}>
-        Horse Race
-      </Heading>
+      {!ctx.mode.game && (
+        <Heading as={"h1"} size="3xl" p={20} textAlign={"center"}>
+          Horse Race
+        </Heading>
+      )}
       {ctx.mode.parameters && <Parameters />}
       {ctx.mode.game && <Game />}
       {ctx.mode.summary && <Summary />}

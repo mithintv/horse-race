@@ -6,12 +6,12 @@ export const getPixels = (prevState: string) => {
 
 export const moveForward = (prevState: string) => {
   let pixelNum = getPixels(prevState);
-  if (pixelNum === "600") return prevState;
+  if (pixelNum === "700") return prevState;
   return (parseInt(pixelNum) + 100).toString() + "px";
 };
 
 export const moveBackward = (prevState: string) => {
   let pixelNum = getPixels(prevState);
-  if (pixelNum === "600") return prevState;
+  if (pixelNum === "700") return prevState;
   return (parseInt(pixelNum) - 100).toString() + "px";
 };
