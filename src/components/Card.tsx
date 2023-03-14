@@ -12,7 +12,6 @@ export const Card = (props: { display: string; suit: string }) => {
   return (
     <div
       css={{
-        height: "100%",
         color: color,
         fontSize: "8rem",
       }}
