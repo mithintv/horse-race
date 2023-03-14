@@ -1,34 +1,22 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Horse Race
 
-## Getting Started
+Horse Race is a web implementation of a drinking game usually played with a deck of cards. Players bet on up to four horses (represented as aces of a suit) and the horses themselves move across the 'field' based on cards that are drawn from the deck.
+<p align='center'>
+<img src='https://user-images.githubusercontent.com/13951154/225166288-80f3ced2-35d8-47af-8843-f8e699ca2a91.gif'/>
+</p>
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+### Getting Started
+Open the [live demo](https://horse-race-mu.vercel.app/) to get started.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### How to Play
+1. Input the number of players you would like to play with.
+2. Input their names as well as their corresponding bets. Players can bet on as many horses (suits) as they would like but currently are limited to a single text field for a bet.
+3. Once all of the players have put in their bets, click 'Play'.
+4. That's it! The game plays entirely on its own and its up to you and your friends to cheer on the horses as they make their way across the track!
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### Results
+1. Once a horse is crowned the winner, a button to see the results will be revealed. Click on 'Results'.
+2. The Summary page will show all of the winning and losing bets. Do what you will with the information 😏
+3. Click 'New Game' to play again!
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
