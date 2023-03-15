@@ -41,6 +41,10 @@ export default function Game() {
 
   const [timeoutId, setTimeoutId] = useState();
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  });
+
   // shuffle deck if ran out of cards
   useEffect(() => {
     if (ctx.deck.order.length === 0) {
@@ -80,24 +84,32 @@ export default function Game() {
   // set winner when a horse reaches threshold
   useEffect(() => {
     if (heartsHorse === end) {
-      ctx.setMode("END_GAME");
-      ctx.setWinner("hearts");
-      clearTimeout(timeoutId);
+      setTimeout(() => {
+        ctx.setMode("END_GAME");
+        ctx.setWinner("hearts");
+        clearTimeout(timeoutId);
+      }, 1000);
     }
     if (spadesHorse === end) {
-      ctx.setMode("END_GAME");
-      ctx.setWinner("spades");
-      clearTimeout(timeoutId);
+      setTimeout(() => {
+        ctx.setMode("END_GAME");
+        ctx.setWinner("spades");
+        clearTimeout(timeoutId);
+      }, 1000);
     }
     if (diamondsHorse === end) {
-      ctx.setMode("END_GAME");
-      ctx.setWinner("diamonds");
-      clearTimeout(timeoutId);
+      setTimeout(() => {
+        ctx.setMode("END_GAME");
+        ctx.setWinner("diamonds");
+        clearTimeout(timeoutId);
+      }, 1000);
     }
     if (clubsHorse === end) {
-      ctx.setMode("END_GAME");
-      ctx.setWinner("clubs");
-      clearTimeout(timeoutId);
+      setTimeout(() => {
+        ctx.setMode("END_GAME");
+        ctx.setWinner("clubs");
+        clearTimeout(timeoutId);
+      }, 1000);
     }
   }, [end, timeoutId, heartsHorse, spadesHorse, diamondsHorse, clubsHorse]);
 

@@ -50,7 +50,7 @@ export default function Parameters() {
         Next
       </Button> */}
       <Heading as={"h2"} size="xl" mb={10} textAlign={"center"}>
-        Parameters
+        Players & Wagers
       </Heading>
       <form css={{ width: "325px" }} onSubmit={submitHandler}>
         <Flex mb={4}>

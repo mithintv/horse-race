@@ -114,9 +114,10 @@ export const AppProvider = (props: AppProps) => {
   const modeHandler: ContextInt["setMode"] = (type) => {
     if (type === "RESET_GAME") {
       dispatchGameState({ type: "NEW_GAME" });
+      dispatchDeck({ type: "SHUFFLE" });
+      dispatchPlayersBets({ type: "CLEAR" });
     }
     dispatchMode({ type: type });
-    dispatchDeck({ type: "SHUFFLE" });
   };
 
   const deckHandler: ContextInt["setDeck"] = (type) => {

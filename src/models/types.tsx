@@ -100,6 +100,9 @@ export type PlayersBetsActionType =
         suit: SuitSpecific["type"];
         bets: EmptyInput;
       };
+    }
+  | {
+      type: "CLEAR";
     };
 
 export type GameActionType = {
