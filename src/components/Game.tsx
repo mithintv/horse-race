@@ -265,7 +265,7 @@ export default function Game() {
 
   const viewResults = () => {
     ctx.setMode("VIEW_RESULTS");
-    dispatchDeck({ type: "shuffle" });
+    // dispatchDeck({ type: "shuffle" });
   };
 
   return (
@@ -316,17 +316,17 @@ export default function Game() {
           lineHeight="110px"
           justifyContent="flex-start"
         >
-          <GridItem css={animationCSS(heartsHorse, animateHearts)}>
-            <Card display={hearts[12].display} suit={hearts[12].suit} />
-          </GridItem>
           <GridItem css={animationCSS(spadesHorse, animateSpades)}>
             <Card display={spades[12].display} suit={spades[12].suit} />
           </GridItem>
-          <GridItem css={animationCSS(diamondsHorse, animateDiamonds)}>
-            <Card display={diamonds[12].display} suit={diamonds[12].suit} />
+          <GridItem css={animationCSS(heartsHorse, animateHearts)}>
+            <Card display={hearts[12].display} suit={hearts[12].suit} />
           </GridItem>
           <GridItem css={animationCSS(clubsHorse, animateClubs)}>
             <Card display={clubs[12].display} suit={clubs[12].suit} />
+          </GridItem>
+          <GridItem css={animationCSS(diamondsHorse, animateDiamonds)}>
+            <Card display={diamonds[12].display} suit={diamonds[12].suit} />
           </GridItem>
         </Flex>
         <Flex>{playCard}</Flex>

@@ -10,16 +10,6 @@ import {
 
 export const icons: SuitIcons[] = [
   {
-    type: "hearts",
-    icon: (
-      <Icon
-        css={{ verticalAlign: "text-top" }}
-        fill="#D50001"
-        as={BsSuitHeartFill}
-      />
-    ),
-  },
-  {
     type: "spades",
     icon: (
       <Icon
@@ -30,12 +20,12 @@ export const icons: SuitIcons[] = [
     ),
   },
   {
-    type: "diamonds",
+    type: "hearts",
     icon: (
       <Icon
         css={{ verticalAlign: "text-top" }}
         fill="#D50001"
-        as={BsSuitDiamondFill}
+        as={BsSuitHeartFill}
       />
     ),
   },
@@ -46,6 +36,16 @@ export const icons: SuitIcons[] = [
         css={{ verticalAlign: "text-top" }}
         fill="#000000"
         as={BsSuitClubFill}
+      />
+    ),
+  },
+  {
+    type: "diamonds",
+    icon: (
+      <Icon
+        css={{ verticalAlign: "text-top" }}
+        fill="#D50001"
+        as={BsSuitDiamondFill}
       />
     ),
   },
