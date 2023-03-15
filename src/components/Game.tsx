@@ -1,44 +1,16 @@
 import { useState, useReducer, useContext, useEffect } from "react";
 import AppContext from "../context/app-context";
 import { Card } from "./Card";
-import {
-  hearts,
-  spades,
-  diamonds,
-  clubs,
-  joker,
-  fullDeck,
-  shuffleDeck,
-  shuffledDeck,
-  back,
-  rungs,
-} from "../models/deck";
+import { hearts, spades, diamonds, clubs, joker, back } from "../models/deck";
 
 import { Button, Flex, GridItem, Heading } from "@chakra-ui/react";
 import { icons } from "../models/default";
 import { moveBackward, moveForward } from "../utils/moveHorse";
 import { animationCSS } from "../utils/animations";
 
-export const deckReducer = (
-  state: typeof shuffledDeck,
-  action: { type: string }
-) => {
-  if (action.type === "shuffle") {
-    const { deck: newDeck } = shuffleDeck(fullDeck);
-    return newDeck;
-  }
-  if (action.type === "draw") {
-    const newDeck = [...state];
-    newDeck.pop();
-    return newDeck;
-  }
-  return state;
-};
-
 export default function Game() {
   const ctx = useContext(AppContext);
 
-  const [deck, dispatchDeck] = useReducer(deckReducer, shuffledDeck);
   const [playCard, setPlayCard] = useState(
     <Card suit={joker.suit} display={joker.display} />
   );
@@ -71,12 +43,10 @@ export default function Game() {
 
   // shuffle deck if ran out of cards
   useEffect(() => {
-    if (deck!.length === 0) {
-      dispatchDeck({
-        type: "shuffle",
-      });
+    if (ctx.deck.order.length === 0) {
+      ctx.setDeck("SHUFFLE");
     }
-  }, [deck]);
+  }, [ctx, ctx.deck.order]);
 
   // move horses forward based on card drawn
   useEffect(() => {
@@ -129,7 +99,15 @@ export default function Game() {
       ctx.setWinner("clubs");
       clearTimeout(timeoutId);
     }
-  }, [ctx, timeoutId, heartsHorse, spadesHorse, diamondsHorse, clubsHorse]);
+  }, [
+    ctx,
+    end,
+    timeoutId,
+    heartsHorse,
+    spadesHorse,
+    diamondsHorse,
+    clubsHorse,
+  ]);
 
   // move horse back based on rung reveal
   useEffect(() => {
@@ -142,11 +120,11 @@ export default function Game() {
     ) {
       setTimeout(() => {
         setRungReveal(true);
-        setRung1(rungs[0].display);
-        eval("set" + rungs[0].suit + "Horse")((prevState: string) => {
+        setRung1(ctx.deck.rungs[0].display);
+        eval("set" + ctx.deck.rungs[0].suit + "Horse")((prevState: string) => {
           return moveBackward(prevState);
         });
-        eval("setAnimate" + rungs[0].suit)("backward");
+        eval("setAnimate" + ctx.deck.rungs[0].suit)("backward");
         setShowRung1(true);
         setRungReveal(false);
       }, 1000);
@@ -160,11 +138,11 @@ export default function Game() {
     ) {
       setTimeout(() => {
         setRungReveal(true);
-        setRung2(rungs[1].display);
-        eval("set" + rungs[1].suit + "Horse")((prevState: string) => {
+        setRung2(ctx.deck.rungs[1].display);
+        eval("set" + ctx.deck.rungs[1].suit + "Horse")((prevState: string) => {
           return moveBackward(prevState);
         });
-        eval("setAnimate" + rungs[1].suit)("backward");
+        eval("setAnimate" + ctx.deck.rungs[1].suit)("backward");
         setShowRung2(true);
         setRungReveal(false);
       }, 1000);
@@ -178,11 +156,11 @@ export default function Game() {
     ) {
       setTimeout(() => {
         setRungReveal(true);
-        setRung3(rungs[2].display);
-        eval("set" + rungs[2].suit + "Horse")((prevState: string) => {
+        setRung3(ctx.deck.rungs[2].display);
+        eval("set" + ctx.deck.rungs[2].suit + "Horse")((prevState: string) => {
           return moveBackward(prevState);
         });
-        eval("setAnimate" + rungs[2].suit)("backward");
+        eval("setAnimate" + ctx.deck.rungs[2].suit)("backward");
         setShowRung3(true);
         setRungReveal(false);
       }, 1000);
@@ -196,11 +174,11 @@ export default function Game() {
     ) {
       setTimeout(() => {
         setRungReveal(true);
-        setRung4(rungs[3].display);
-        eval("set" + rungs[3].suit + "Horse")((prevState: string) => {
+        setRung4(ctx.deck.rungs[3].display);
+        eval("set" + ctx.deck.rungs[3].suit + "Horse")((prevState: string) => {
           return moveBackward(prevState);
         });
-        eval("setAnimate" + rungs[3].suit)("backward");
+        eval("setAnimate" + ctx.deck.rungs[3].suit)("backward");
         setShowRung4(true);
         setRungReveal(false);
       }, 1000);
@@ -214,16 +192,17 @@ export default function Game() {
     ) {
       setTimeout(() => {
         setRungReveal(true);
-        setRung5(rungs[4].display);
-        eval("set" + rungs[4].suit + "Horse")((prevState: string) => {
+        setRung5(ctx.deck.rungs[4].display);
+        eval("set" + ctx.deck.rungs[4].suit + "Horse")((prevState: string) => {
           return moveBackward(prevState);
         });
-        eval("setAnimate" + rungs[4].suit)("backward");
+        eval("setAnimate" + ctx.deck.rungs[4].suit)("backward");
         setShowRung5(true);
         setRungReveal(false);
       }, 1000);
     }
   }, [
+    ctx.deck.rungs,
     showRung1,
     showRung2,
     showRung3,
@@ -241,26 +220,24 @@ export default function Game() {
       let timeoutId: any = setTimeout(() => {
         setPlayCard(
           <Card
-            display={deck[deck.length - 1].display}
-            suit={deck[deck.length - 1].suit}
+            display={ctx.deck.order[ctx.deck.order.length - 1].display}
+            suit={ctx.deck.order[ctx.deck.order.length - 1].suit}
           />
         );
-        dispatchDeck({
-          type: "draw",
-        });
+        ctx.setDeck("DRAW");
       }, 3000);
       setTimeoutId(timeoutId);
     }
-  }, [deck, ctx.game.winner, rungReveal]);
+  }, [ctx, ctx.deck.order, ctx.game.winner, rungReveal]);
 
   const randomCard = () => {
     setPlayCard(
       <Card
-        display={deck[deck.length - 1].display}
-        suit={deck[deck.length - 1].suit}
+        display={ctx.deck.order[ctx.deck.order.length - 1].display}
+        suit={ctx.deck.order[ctx.deck.order.length - 1].suit}
       />
     );
-    dispatchDeck({ type: "draw" });
+    ctx.setDeck("DRAW");
   };
 
   const viewResults = () => {
@@ -293,7 +270,7 @@ export default function Game() {
       <Flex flexDir="column" alignItems="center">
         {/* rungs flex container */}
         <Flex gridGap={"10px"} lineHeight="150px">
-          {rungs.map((card, index) => {
+          {ctx.deck.rungs.map((card, index) => {
             return (
               <GridItem key={index}>
                 <Card

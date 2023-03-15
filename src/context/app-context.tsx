@@ -1,10 +1,12 @@
-import React, { useState, useReducer, createContext } from "react";
+import { useState, useReducer, createContext } from "react";
 // custom types
 import type { AppProps, EmptyInput, ContextInt } from "../models/types";
 // custom functions and components
 import playersBetsReducer from "./playersBetsReducer";
 import gameStateReducer, { initialGameState } from "./gameStateReducer";
 import modeReducer, { initialModeState } from "./modeReducer";
+import deckReducer from "./deckReducer";
+import { fullDeck, shuffleDeck } from "../models/deck";
 
 const AppContext = createContext<ContextInt>({
   mode: {
@@ -16,7 +18,10 @@ const AppContext = createContext<ContextInt>({
     rows: null,
     winner: null,
   },
-
+  deck: {
+    order: [],
+    rungs: [],
+  },
   players: [],
 
   addRow: (enteredRows) => {},
@@ -26,6 +31,7 @@ const AppContext = createContext<ContextInt>({
   addBet: (playerId, playerBet) => {},
   setWinner: (winningSuit) => {},
   setMode: (ModeActionType) => {},
+  setDeck: (deckActionType) => {},
 });
 
 export default AppContext;
@@ -33,11 +39,15 @@ export default AppContext;
 export const AppProvider = (props: AppProps) => {
   // state for selecting total number of rows and resulting rows in-game, total number of players and resulting player object for names and bets, and for displaying game or form
   const [totalRows, setTotalRows] = useState<EmptyInput>(null);
-  const [mode, dispatchMode] = useReducer(modeReducer, initialModeState);
+  const [modeState, dispatchMode] = useReducer(modeReducer, initialModeState);
   const [playersBets, dispatchPlayersBets] = useReducer(playersBetsReducer, []);
   const [gameState, dispatchGameState] = useReducer(
     gameStateReducer,
     initialGameState
+  );
+  const [deckState, dispatchDeck] = useReducer(
+    deckReducer,
+    shuffleDeck(fullDeck)
   );
 
   // store number of rows in context api
@@ -106,13 +116,19 @@ export const AppProvider = (props: AppProps) => {
       dispatchGameState({ type: "NEW_GAME" });
     }
     dispatchMode({ type: type });
+    dispatchDeck({ type: "SHUFFLE" });
+  };
+
+  const deckHandler: ContextInt["setDeck"] = (type) => {
+    dispatchDeck({ type });
   };
 
   return (
     <AppContext.Provider
       value={{
-        mode: mode,
+        mode: modeState,
         game: gameState,
+        deck: deckState,
         players: playersBets,
 
         addRow: addRowHandler,
@@ -123,6 +139,7 @@ export const AppProvider = (props: AppProps) => {
 
         setWinner: setWinnerHandler,
         setMode: modeHandler,
+        setDeck: deckHandler,
       }}
     >
       {props.children}
