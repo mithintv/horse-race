@@ -46,15 +46,15 @@ export default function Parameters() {
 
   return (
     <Flex align="center" flexDir={"column"} justify="center">
-      <Button mb={10} onClick={stateHandler}>
+      {/* <Button mb={10} onClick={stateHandler}>
         Next
-      </Button>
+      </Button> */}
       <Heading as={"h2"} size="xl" mb={10} textAlign={"center"}>
         Parameters
       </Heading>
-      <form onSubmit={submitHandler}>
+      <form css={{ width: "325px" }} onSubmit={submitHandler}>
         <Flex mb={4}>
-          <FormControl mr={2} variant="floating" id="rows">
+          {/* <FormControl mr={2} variant="floating" id="rows">
             <Input
               type="number"
               id="rows"
@@ -64,7 +64,7 @@ export default function Parameters() {
               placeholder=" "
             />
             <FormLabel>Number of Rows</FormLabel>
-          </FormControl>
+          </FormControl> */}
           <FormControl variant="floating" id="participants" isRequired>
             <Input
               type="number"

@@ -46,7 +46,7 @@ export default function Game() {
     if (ctx.deck.order.length === 0) {
       ctx.setDeck("SHUFFLE");
     }
-  }, [ctx, ctx.deck.order]);
+  }, [ctx.deck.order]);
 
   // move horses forward based on card drawn
   useEffect(() => {
@@ -99,15 +99,7 @@ export default function Game() {
       ctx.setWinner("clubs");
       clearTimeout(timeoutId);
     }
-  }, [
-    ctx,
-    end,
-    timeoutId,
-    heartsHorse,
-    spadesHorse,
-    diamondsHorse,
-    clubsHorse,
-  ]);
+  }, [end, timeoutId, heartsHorse, spadesHorse, diamondsHorse, clubsHorse]);
 
   // move horse back based on rung reveal
   useEffect(() => {
@@ -225,10 +217,10 @@ export default function Game() {
           />
         );
         ctx.setDeck("DRAW");
-      }, 3000);
+      }, 2000);
       setTimeoutId(timeoutId);
     }
-  }, [ctx, ctx.deck.order, ctx.game.winner, rungReveal]);
+  }, [ctx.deck.order.length, ctx.game.winner, rungReveal]);
 
   const randomCard = () => {
     setPlayCard(
@@ -269,7 +261,7 @@ export default function Game() {
       </Flex>
       <Flex flexDir="column" alignItems="center">
         {/* rungs flex container */}
-        <Flex gridGap={"10px"} lineHeight="150px">
+        <Flex gridGap={"10px"} lineHeight="125px">
           {ctx.deck.rungs.map((card, index) => {
             return (
               <GridItem key={index}>
@@ -287,7 +279,6 @@ export default function Game() {
         </Flex>
         {/* horses flex container */}
         <Flex
-          wrap="wrap"
           width="690px"
           flexDir="column"
           lineHeight="110px"
@@ -306,10 +297,10 @@ export default function Game() {
             <Card display={diamonds[12].display} suit={diamonds[12].suit} />
           </GridItem>
         </Flex>
-        <Flex>{playCard}</Flex>
+        <div css={{ position: "relative", top: "-25px" }}>{playCard}</div>
       </Flex>
 
-      {!ctx.game.winner && <Button onClick={randomCard}>Click</Button>}
+      {/* {!ctx.game.winner && <Button onClick={randomCard}>Click</Button>} */}
     </Flex>
   );
 }
