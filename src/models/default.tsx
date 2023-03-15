@@ -10,19 +10,43 @@ import {
 
 export const icons: SuitIcons[] = [
   {
-    type: "hearts",
-    icon: <Icon fill="#D50001" as={BsSuitHeartFill} />,
-  },
-  {
     type: "spades",
-    icon: <Icon fill="#000000" as={BsSuitSpadeFill} />,
+    icon: (
+      <Icon
+        css={{ verticalAlign: "text-top" }}
+        fill="#000000"
+        as={BsSuitSpadeFill}
+      />
+    ),
   },
   {
-    type: "diamonds",
-    icon: <Icon fill="#D50001" as={BsSuitDiamondFill} />,
+    type: "hearts",
+    icon: (
+      <Icon
+        css={{ verticalAlign: "text-top" }}
+        fill="#D50001"
+        as={BsSuitHeartFill}
+      />
+    ),
   },
   {
     type: "clubs",
-    icon: <Icon fill="#000000" as={BsSuitClubFill} />,
+    icon: (
+      <Icon
+        css={{ verticalAlign: "text-top" }}
+        fill="#000000"
+        as={BsSuitClubFill}
+      />
+    ),
+  },
+  {
+    type: "diamonds",
+    icon: (
+      <Icon
+        css={{ verticalAlign: "text-top" }}
+        fill="#D50001"
+        as={BsSuitDiamondFill}
+      />
+    ),
   },
 ];

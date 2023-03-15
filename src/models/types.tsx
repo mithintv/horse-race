@@ -6,6 +6,12 @@ export type EmptyInput = string | null;
 
 export type SuitTypes = "hearts" | "spades" | "diamonds" | "clubs";
 
+export type SuitDeck = {
+  name: string;
+  display: string;
+  suit: string;
+}[];
+
 export interface SuitIcons {
   type: SuitTypes;
   icon: JSX.Element;
@@ -38,6 +44,10 @@ export interface ContextInt {
     rows: EmptyInput;
     winner: EmptyInput;
   };
+  deck: {
+    order: SuitDeck;
+    rungs: SuitDeck;
+  };
   players: PlayerType[];
 
   addRow: (enteredRows: EmptyInput) => void;
@@ -56,6 +66,7 @@ export interface ContextInt {
   setMode: (
     type: "RESET_GAME" | "PLAY_GAME" | "END_GAME" | "VIEW_RESULTS"
   ) => void;
+  setDeck: (type: "SHUFFLE" | "DRAW") => void;
 }
 
 // reducer types
@@ -89,6 +100,9 @@ export type PlayersBetsActionType =
         suit: SuitSpecific["type"];
         bets: EmptyInput;
       };
+    }
+  | {
+      type: "CLEAR";
     };
 
 export type GameActionType = {
@@ -96,4 +110,8 @@ export type GameActionType = {
   payload?: {
     winner: ContextInt["game"]["winner"];
   };
+};
+
+export type DeckActionType = {
+  type: "SHUFFLE" | "DRAW";
 };

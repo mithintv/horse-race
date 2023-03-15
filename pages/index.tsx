@@ -12,7 +12,7 @@ export default function Home() {
 
   return (
     <>
-      {!ctx.mode.game && (
+      {ctx.mode.parameters && (
         <Heading as={"h1"} size="3xl" p={20} textAlign={"center"}>
           Horse Race
         </Heading>

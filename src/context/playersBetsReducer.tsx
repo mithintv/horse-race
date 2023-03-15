@@ -68,5 +68,8 @@ export default function playersBetsReducer(
       selectedSuit = action.payload.suit;
       if (player) player.suits[selectedSuit].bets = action.payload.bets;
       return newState;
+
+    case "CLEAR":
+      return [];
   }
 }

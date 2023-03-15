@@ -1,3 +1,5 @@
+import type { SuitDeck } from "./types";
+
 export const hearts = [
   { name: "Two", display: "🂲", suit: "hearts" },
   { name: "Three", display: "🂳", suit: "hearts" },
@@ -73,31 +75,23 @@ export const back = {
 
 export const fullDeck = [...clubs, ...diamonds, ...spades, ...hearts];
 
-export const shuffleDeck = (fullDeck: suitDeck) => {
-  let deck: typeof back[] = [];
+export const shuffleDeck = (fullDeck: SuitDeck) => {
+  let order: SuitDeck = [];
   let rungs = [];
   while (fullDeck.length > 4) {
     let index = Math.floor(Math.random() * fullDeck.length);
     while (fullDeck[index].name === "Ace") {
       index = Math.floor(Math.random() * fullDeck.length);
     }
-    deck.push(fullDeck[index]);
+    order.push(fullDeck[index]);
     fullDeck = fullDeck.filter(
       (card) => card.display !== fullDeck[index].display
     );
   }
   for (let i = 0; i < 5; i++) {
     let random = Math.floor(Math.random() * (48 - i));
-    rungs.push(deck[random]);
-    deck = deck.filter((card) => card !== deck[random]);
+    rungs.push(order[random]);
+    order = order.filter((card) => card !== order[random]);
   }
-  return { deck, rungs };
+  return { order, rungs };
 };
-
-export const { deck: shuffledDeck, rungs } = shuffleDeck(fullDeck);
-
-type suitDeck = {
-  name: string;
-  display: string;
-  suit: string;
-}[];

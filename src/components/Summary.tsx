@@ -49,7 +49,16 @@ export default function Summary() {
   };
   return (
     <Flex flexDir={"column"} align={"center"}>
-      <Button onClick={clickHandler} width={"150px"} mb={20}>
+      <Heading
+        as={"h1"}
+        margin={"2rem auto"}
+        size="2xl"
+        p="10"
+        textAlign={"center"}
+      >
+        Summary
+      </Heading>
+      <Button onClick={clickHandler} width={"150px"} marginBottom="4rem">
         New Game
       </Button>
 
@@ -62,97 +71,101 @@ export default function Summary() {
       >
         {type!.icon} Wins!
       </Heading>
-      <Flex flexDir={"column"} justifyContent={"center"}>
-        <Heading
-          as={"h3"}
-          size="lg"
-          mb={3}
-          textAlign={"center"}
-          justifyContent={"center"}
-        >
-          Winners
-        </Heading>
-        <Flex mb={10} justifyContent={"center"}>
-          <TableContainer minW={"480px"}>
-            <Table>
-              <TableCaption>Winning Wagers</TableCaption>
-              <Thead>
-                <Tr>
-                  <Th textAlign={"center"}>Players</Th>
-                  <Th textAlign={"center"}>Wagers</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {winners.map((winner, index) => {
-                  return (
-                    <Tr key={index}>
-                      <Td textAlign={"center"}>{winner.name}</Td>
-                      <Td textAlign={"center"}>
-                        {winner.suits[type!.type].bets}
-                      </Td>
-                    </Tr>
-                  );
-                })}
-              </Tbody>
-            </Table>
-          </TableContainer>
+      <Flex flexDir={"row"} justifyContent={"center"}>
+        <Flex flexDir={"column"}>
+          <Heading
+            as={"h3"}
+            size="lg"
+            mb={3}
+            textAlign={"center"}
+            justifyContent={"center"}
+          >
+            Winners
+          </Heading>
+          <Flex mb={10} justifyContent={"center"}>
+            <TableContainer minW={"480px"}>
+              <Table>
+                <TableCaption>Winning Wagers</TableCaption>
+                <Thead>
+                  <Tr>
+                    <Th textAlign={"center"}>Players</Th>
+                    <Th textAlign={"center"}>Wagers</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {winners.map((winner, index) => {
+                    return (
+                      <Tr key={index}>
+                        <Td textAlign={"center"}>{winner.name}</Td>
+                        <Td textAlign={"center"}>
+                          {winner.suits[type!.type].bets}
+                        </Td>
+                      </Tr>
+                    );
+                  })}
+                </Tbody>
+              </Table>
+            </TableContainer>
+          </Flex>
         </Flex>
 
-        <Heading
-          as={"h3"}
-          size="lg"
-          mb={3}
-          textAlign={"center"}
-          justifyContent={"center"}
-        >
-          Losers
-        </Heading>
-        <Flex justifyContent={"center"}>
-          <TableContainer minW={"480px"}>
-            <Table>
-              <TableCaption>Losing Wagers</TableCaption>
-              <Thead>
-                <Tr>
-                  <Th textAlign={"center"}>Players</Th>
-                  <Th textAlign={"center"}>Wagers</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {suitOne.map((suit, index) => {
-                  return (
-                    <Tr key={index}>
-                      <Td textAlign={"center"}>{suit.name}</Td>
-                      <Td textAlign={"center"}>
-                        {suit.suits[losingSuits[0].type].bets}
-                      </Td>
-                    </Tr>
-                  );
-                })}
+        <Flex flexDir={"column"}>
+          <Heading
+            as={"h3"}
+            size="lg"
+            mb={3}
+            textAlign={"center"}
+            justifyContent={"center"}
+          >
+            Losers
+          </Heading>
+          <Flex justifyContent={"center"}>
+            <TableContainer minW={"480px"}>
+              <Table>
+                <TableCaption>Losing Wagers</TableCaption>
+                <Thead>
+                  <Tr>
+                    <Th textAlign={"center"}>Players</Th>
+                    <Th textAlign={"center"}>Wagers</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {suitOne.map((suit, index) => {
+                    return (
+                      <Tr key={index}>
+                        <Td textAlign={"center"}>{suit.name}</Td>
+                        <Td textAlign={"center"}>
+                          {suit.suits[losingSuits[0].type].bets}
+                        </Td>
+                      </Tr>
+                    );
+                  })}
 
-                {suitTwo.map((suit, index) => {
-                  return (
-                    <Tr key={index}>
-                      <Td textAlign={"center"}>{suit.name}</Td>
-                      <Td textAlign={"center"}>
-                        {suit.suits[losingSuits[1].type].bets}
-                      </Td>
-                    </Tr>
-                  );
-                })}
+                  {suitTwo.map((suit, index) => {
+                    return (
+                      <Tr key={index}>
+                        <Td textAlign={"center"}>{suit.name}</Td>
+                        <Td textAlign={"center"}>
+                          {suit.suits[losingSuits[1].type].bets}
+                        </Td>
+                      </Tr>
+                    );
+                  })}
 
-                {suitThree.map((suit, index) => {
-                  return (
-                    <Tr key={index}>
-                      <Td textAlign={"center"}>{suit.name}</Td>
-                      <Td textAlign={"center"}>
-                        {suit.suits[losingSuits[2].type].bets}
-                      </Td>
-                    </Tr>
-                  );
-                })}
-              </Tbody>
-            </Table>
-          </TableContainer>
+                  {suitThree.map((suit, index) => {
+                    return (
+                      <Tr key={index}>
+                        <Td textAlign={"center"}>{suit.name}</Td>
+                        <Td textAlign={"center"}>
+                          {suit.suits[losingSuits[2].type].bets}
+                        </Td>
+                      </Tr>
+                    );
+                  })}
+                </Tbody>
+              </Table>
+            </TableContainer>
+          </Flex>
         </Flex>
       </Flex>
     </Flex>
